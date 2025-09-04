@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Transaction } from '../models/transaction.model';
-
 // @ts-ignore
 import { openDB } from 'idb';
 
@@ -18,18 +17,24 @@ export class IndexedDBService {
 
         // Indexes for fast queries
         store.createIndex('by_userId', 'userId', { unique: false });
+        store.createIndex('by_name', 'name', { unique: false });
         store.createIndex('by_type', 'type', { unique: false });
-        store.createIndex('by_category', 'category.id', { unique: false });
+        store.createIndex('by_category', 'category.name', { unique: false });
         store.createIndex('by_date', 'date', { unique: false });
         store.createIndex('by_amount', 'amount', { unique: false });
-        store.createIndex('by_currency', 'currency', { unique: false });
         store.createIndex('by_frequency', 'frequency', { unique: false });
       }
     }
   });
 
-  async init() {
-    await this.dbPromise;
+  private isInitialized = false;
+
+  async init(): Promise<void> {
+    if (!this.isInitialized) {
+      await this.dbPromise;
+      this.isInitialized = true;
+      console.log('IndexedDB initialized');
+    }
   }
 
   // Get all transactions
@@ -57,9 +62,9 @@ export class IndexedDBService {
   }
 
   // Get transactions by category
-  async getTransactionsByCategory(categoryId: string): Promise<Transaction[]> {
+  async getTransactionsByCategory(categoryName: string): Promise<Transaction[]> {
     const db = await this.dbPromise;
-    return db.getAllFromIndex('transactions', 'by_category', categoryId);
+    return db.getAllFromIndex('transactions', 'by_category', categoryName);
   }
 
   // Add a new transaction

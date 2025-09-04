@@ -1,0 +1,55 @@
+<h2 class="text-2xl font-bold">Ajouter une transaction</h2>
+<form class="grid grid-cols-5 gap-4" [formGroup]="AddTransaction" (ngSubmit)="onSubmit()">
+  <mat-form-field class="col-span-3">
+    <mat-label>Nom</mat-label>
+    <textarea matInput formControlName="name" rows="3"></textarea>
+  </mat-form-field>
+  <mat-form-field class="col-span-1">
+    <mat-label>Type de transaction</mat-label>
+    <mat-select formControlName="type">
+      <mat-option [value]="'income'">Income</mat-option>
+      <mat-option [value]="'expense'">Expense</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="col-span-1">
+    <mat-label>Catégorie</mat-label>
+    <mat-select formControlName="category">
+      <mat-option *ngFor="let category of cats" [value]="category">
+        <mat-icon>{{ category.icon }}</mat-icon>
+        {{ category.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field class="col-span-1">
+    <mat-label>Montant</mat-label>
+    <input type="number" matInput formControlName="amount"/>
+    <span matSuffix>€</span>
+  </mat-form-field>
+
+  <mat-form-field class="col-span-1">
+    <mat-label>Date</mat-label>
+    <input matInput [matDatepicker]="datePicker" formControlName="date" />
+    <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+    <mat-datepicker #datePicker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field class="col-span-1">
+    <mat-label>Fréquence</mat-label>
+    <mat-select formControlName="frequency">
+      <mat-option [value]="'once'">One time</mat-option>
+      <mat-option [value]="'weekly'">Weekly</mat-option>
+      <mat-option [value]="'monthly'">Monthly</mat-option>
+      <mat-option [value]="'yearly'">Yearly</mat-option>
+      <mat-option [value]="'none'">None</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="col-span-1">
+    <button class="w-full" mat-flat-button color="primary" type="submit">
+      Submit
+    </button>
+  </div>
+</form>

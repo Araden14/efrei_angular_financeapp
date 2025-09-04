@@ -4,14 +4,15 @@ export interface Category {
 }
 
 export const categories: Category[] = [
-    { name: 'Groceries', icon: 'shopping_cart' },
-    { name: 'Utilities', icon: 'flash_on' },
-    { name: 'Transportation', icon: 'directions_car' },
-    { name: 'Healthcare', icon: 'local_hospital' },
-    { name: 'Entertainment', icon: 'movie' },
-    { name: 'Dining Out', icon: 'restaurant' },
-    { name: 'Education', icon: 'school' },
-    { name: 'Personal Care', icon: 'spa' },
-    { name: 'Clothing', icon: 'checkroom' },
-    { name: 'Housing', icon: 'home' }
+    { name: 'Alimentation', icon: 'shopping_cart' },
+    { name: 'Services publics', icon: 'flash_on' },
+    { name: 'Transport', icon: 'directions_car' },
+    { name: 'Santé', icon: 'local_hospital' },
+    { name: 'Divertissement', icon: 'movie' },
+    { name: 'Restauration', icon: 'restaurant' },
+    { name: 'Éducation', icon: 'school' },
+    { name: 'Soins personnels', icon: 'spa' },
+    { name: 'Vêtements', icon: 'checkroom' },
+    { name: 'Logement', icon: 'home' },
+    {name: 'Autre', icon: 'more_horiz'}
 ];

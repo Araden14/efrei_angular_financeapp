@@ -1,0 +1,11 @@
+  <ag-grid-angular
+    class="w-full h-full"
+    [rowData]="store.rows()"
+    [columnDefs]="colDefs"
+    [defaultColDef]="defaultColDef"
+    [gridOptions]="gridOptions"
+    [pagination]="true"
+    [paginationPageSize]="10"
+    [paginationPageSizeSelector]="[10, 20, 50]"
+    domLayout="autoHeight"
+  />
