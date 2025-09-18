@@ -1,7 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
-@import "ag-grid-community/styles/ag-grid.css";
-@import "ag-grid-community/styles/ag-theme-material.css";
+
+/* AG Grid Core Styles - Required for ag-Grid to work */
+@import '~ag-grid-community/styles/ag-grid.css';
+
+/* AG Grid Theme - Choose one theme (you can switch between them) */
+/* Quartz theme (modern, clean) */
+@import '~ag-grid-community/styles/ag-theme-quartz.css';
+
+/* Custom AG Grid theme overrides for better Material Design integration */
+.ag-theme-quartz {
+  --ag-background-color: #ffffff;
+  --ag-header-background-color: #f8fafc;
+  --ag-border-color: #e2e8f0;
+  --ag-header-foreground-color: #374151;
+  --ag-foreground-color: #111827;
+  --ag-row-hover-color: #f3f4f6;
+  --ag-selected-row-background-color: #dbeafe;
+  --ag-range-selection-background-color: rgba(59, 130, 246, 0.1);
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Ensure proper grid layout */
+.ag-theme-quartz .ag-root-wrapper {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
 html, body {
   height: 100%;
   margin: 0;
@@ -10,5 +36,5 @@ html, body {
 
 *, *::before, *::after {
     box-sizing: border-box;
-  }
+}
 

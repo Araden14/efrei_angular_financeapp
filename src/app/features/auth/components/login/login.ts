@@ -8,13 +8,14 @@ import {MatIconModule} from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../models/user.model';
 import { Router, RouterLink } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'login',
   standalone:true,
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
-  imports: [ReactiveFormsModule, RouterLink , MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule],
+  imports: [ReactiveFormsModule, RouterLink , MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule,MatSnackBarModule],
 })
 export class LoginComponent {
   email = new FormControl('')
@@ -25,7 +26,7 @@ export class LoginComponent {
     this.hide.set(!this.hide());
     event.stopPropagation();
   }
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {}
 
   async onSubmit() {
     if (this.email.value && this.password.value) {
@@ -37,10 +38,17 @@ export class LoginComponent {
       const result = await this.authService.login(loginRequest);
       if (result.success) {
         console.log('Login successful:', result.user);
+        this.snackBar.open("Login successful", "Close", {
+          duration: 3000,
+          panelClass: ['success-snackbar']
+        })
         this.router.navigate(['']);
       } else {
         console.error('Login failed:', result.error);
-        // Show error message to user
+        this.snackBar.open("Login failed", "Close", {
+          duration: 3000,
+          panelClass: ['error-snackbar']
+        })
       }
     } catch (error) {
       console.error('Login error:', error);

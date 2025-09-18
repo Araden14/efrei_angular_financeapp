@@ -3,6 +3,7 @@ import { TransactionformComponent } from '../../../features/transactions/compone
 import { TransactionGridComponent } from '../../../features/transactions/components/grid/transactiongrid.component';
 @Component({
   selector: 'app-home',
+  standalone:true,
   imports: [TransactionformComponent, TransactionGridComponent],
   templateUrl: './home.component.html'
 })
