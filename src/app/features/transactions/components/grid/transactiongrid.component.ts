@@ -148,6 +148,7 @@ export class TransactionGridComponent {
         const node = this.gridApi.getDisplayedRowAtIndex(i);
         if (node?.data) {
         rowDataToRemove.push(node.data);
+        this.DBservice.deleteTransaction(node.data.id)
         }
     }
 
