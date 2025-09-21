@@ -3,7 +3,7 @@ import type { ColDef, GridOptions, GridApi, GridReadyEvent, GetContextMenuItemsP
 import { Component, inject } from '@angular/core';
 import { IndexedDBService } from '../../../indexdb/services/indexdb.service';
 import { GridStore } from './grid.store';
-import { ModuleRegistry, themeMaterial } from 'ag-grid-community';
+import { ModuleRegistry, themeMaterial, themeQuartz } from 'ag-grid-community';
 import { AllEnterpriseModule } from 'ag-grid-enterprise';
 
 ModuleRegistry.registerModules([AllEnterpriseModule as Module]);
@@ -53,10 +53,10 @@ export class TransactionGridComponent {
     };
 
     gridOptions: GridOptions = {
+        rowHeight:40,
         pagination: true,
         paginationPageSize: 10,
         paginationPageSizeSelector: [10, 20, 50],
-        domLayout: 'autoHeight',
         suppressHorizontalScroll: false,
         enableCellTextSelection: true,
         ensureDomOrder: true,
