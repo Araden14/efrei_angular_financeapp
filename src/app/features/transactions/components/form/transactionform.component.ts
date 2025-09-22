@@ -1,30 +1,29 @@
 import { Component, inject } from '@angular/core';
 import { IndexedDBService } from '../../../indexdb/services/indexdb.service';
 import { CommonModule } from '@angular/common';
-import { MatButton } from '@angular/material/button';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { Transaction } from '../../../indexdb/models/transaction.model';
-import { MatOption, MatSelect } from '@angular/material/select';
 import { categories } from '../../../../data/categories';
-import { MatIcon } from '@angular/material/icon';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { generateId } from '../../../../utils/generateId';
 import { Category } from '../../../../data/categories';
 import { GridStore } from '../grid/grid.store';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CategoryService } from '../../../../shared/services/category.service';
+import { MessageService } from 'primeng/api';
+import { InputText } from 'primeng/inputtext';
+import { Textarea } from 'primeng/textarea';
+import { Select } from 'primeng/select';
+import { DatePicker } from 'primeng/datepicker';
+import { Button } from 'primeng/button';
+import { FloatLabel } from 'primeng/floatlabel';
 
 @Component({
     selector: 'transactions-form',
-    imports: [CommonModule, MatDatepickerModule, MatSelect, MatOption, MatIcon, MatButton, MatFormField, MatLabel, MatInputModule, ReactiveFormsModule, MatSnackBarModule],
+    imports: [CommonModule, InputText, Textarea, Select, DatePicker, Button, FloatLabel, ReactiveFormsModule],
     providers: [IndexedDBService],
     templateUrl:'./transactionform.component.html',
   })
   export class TransactionformComponent {
-    constructor(private DBservice: IndexedDBService, private snackBar: MatSnackBar) {
+    constructor(private DBservice: IndexedDBService, private messageService: MessageService) {
     }
     private store = inject(GridStore);
     private categories = inject(CategoryService)
@@ -102,19 +101,21 @@ import { CategoryService } from '../../../../shared/services/category.service';
             await this.DBservice.addTransaction(transaction);
             this.store.add([transaction]);
             console.log("New transaction created:", transaction);
-            
+
             // Reset form after successful submission
             this.AddTransaction.reset();
-            
-            this.snackBar.open("Transaction added successfully!", "Close", {
-                duration: 3000,
-                panelClass: ['success-snackbar']
+
+            this.messageService.add({
+                severity: 'success',
+                summary: 'Success',
+                detail: 'Transaction added successfully!'
             });
         } catch (error) {
             console.error("Error creating transaction:", error);
-            this.snackBar.open("Failed to save transaction. Please try again.", "Close", {
-                duration: 5000,
-                panelClass: ['error-snackbar']
+            this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Failed to save transaction. Please try again.'
             });
         }
     }
@@ -146,10 +147,11 @@ import { CategoryService } from '../../../../shared/services/category.service';
     }
     
     private showSpecificErrors(errors: string[]) {
-        const errorMessage = errors.join('\n• ');
-        this.snackBar.open(`Please fix the following errors:\n• ${errorMessage}`, "Close", {
-            duration: 5000,
-            panelClass: ['error-snackbar']
+        const errorMessage = errors.join(', ');
+        this.messageService.add({
+            severity: 'error',
+            summary: 'Validation Error',
+            detail: `Please fix the following errors: ${errorMessage}`
         });
     }
 }

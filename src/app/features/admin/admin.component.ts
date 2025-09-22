@@ -10,6 +10,12 @@ import { CapitalizePipe } from '../../shared/pipes/capitalize.pipe';
 import { ConfirmDirective } from '../../shared/directives/confirm.directive';
 import { Category } from '../../data/categories';
 import { CategoryService } from '../../shared/services/category.service';
+// PrimeNG imports
+import { Card } from 'primeng/card';
+import { Tabs } from 'primeng/tabs';
+import { TabPanel } from 'primeng/tabs';
+import { Button } from 'primeng/button';
+import { Chip } from 'primeng/chip';
 
 @Component({
   selector: 'admin',
@@ -23,7 +29,12 @@ import { CategoryService } from '../../shared/services/category.service';
     DateFormatPipe,
     CategoryIconPipe,
     CapitalizePipe,
-    ConfirmDirective
+    // PrimeNG components
+    Card,
+    Tabs,
+    TabPanel,
+    Button,
+    Chip
   ]
 })
 export class AdminComponent {

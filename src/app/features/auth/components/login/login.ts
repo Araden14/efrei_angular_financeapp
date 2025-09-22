@@ -1,32 +1,25 @@
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import { Component, signal} from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';  
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../models/user.model';
-import { Router, RouterLink } from '@angular/router';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { InputText } from 'primeng/inputtext';
+import { Password } from 'primeng/password';
+import { Button } from 'primeng/button';
+import { FloatLabel } from 'primeng/floatlabel';
 
 @Component({
   selector: 'login',
   standalone:true,
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
-  imports: [ReactiveFormsModule, RouterLink , MatFormFieldModule, MatInputModule, MatSelectModule, MatButtonModule, MatIconModule,MatSnackBarModule],
+  imports: [ReactiveFormsModule, InputText, Password, Button, FloatLabel],
 })
 export class LoginComponent {
   email = new FormControl('')
   password = new FormControl('');
-  hide = signal(true);
-
-  clickEvent(event: MouseEvent) {
-    this.hide.set(!this.hide());
-    event.stopPropagation();
-  }
-  constructor(private authService: AuthService, private router: Router, private snackBar: MatSnackBar) {}
+  constructor(private authService: AuthService, private router: Router, private messageService: MessageService) {}
 
   async onSubmit() {
     if (this.email.value && this.password.value) {
@@ -38,17 +31,19 @@ export class LoginComponent {
       const result = await this.authService.login(loginRequest);
       if (result.success) {
         console.log('Login successful:', result.user);
-        this.snackBar.open("Login successful", "Close", {
-          duration: 3000,
-          panelClass: ['success-snackbar']
-        })
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Success',
+          detail: 'Login successful'
+        });
         this.router.navigate(['']);
       } else {
         console.error('Login failed:', result.error);
-        this.snackBar.open("Login failed", "Close", {
-          duration: 3000,
-          panelClass: ['error-snackbar']
-        })
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Login failed'
+        });
       }
     } catch (error) {
       console.error('Login error:', error);

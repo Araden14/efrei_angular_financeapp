@@ -1,57 +1,86 @@
-<h2 class="text-2xl font-bold">Ajouter une transaction</h2>
-<form class="flex flex-col gap-4" [formGroup]="AddTransaction" (ngSubmit)="onSubmit()">
-  <mat-form-field>
-    <mat-label>Nom</mat-label>
-    <textarea matInput formControlName="name" rows="3"></textarea>
-  </mat-form-field>
+<form class="space-y-10" [formGroup]="AddTransaction" (ngSubmit)="onSubmit()">
+  <!-- Name field - full width -->
+  <div class="w-full">
+    <p-floatlabel>
+      <textarea pTextarea formControlName="name" rows="3" id="name" class="w-full"></textarea>
+      <label for="name">Nom</label>
+    </p-floatlabel>
+  </div>
 
-  <div class="flex gap-4">
-    <mat-form-field class="flex-1">
-      <mat-label>Type de transaction</mat-label>
-      <mat-select formControlName="type">
-        <mat-option [value]="'income'">Income</mat-option>
-        <mat-option [value]="'expense'">Expense</mat-option>
-      </mat-select>
-    </mat-form-field>
+  <!-- Type and Category row - 2 columns -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <p-floatlabel>
+      <p-select
+        formControlName="type"
+        [options]="[{label: 'Income', value: 'income'}, {label: 'Expense', value: 'expense'}]"
+        optionLabel="label"
+        optionValue="value"
+        inputId="type"
+        class="w-full">
+      </p-select>
+      <label for="type">Type de transaction</label>
+    </p-floatlabel>
 
-    <mat-form-field class="flex-1">
-      <mat-label>Catégorie</mat-label>
-      <mat-select formControlName="category">
-        <mat-option *ngFor="let category of categoriesSignal()" [value]="category">
-          <mat-icon>{{ category.icon }}</mat-icon>
+    <p-floatlabel>
+      <p-select
+        formControlName="category"
+        [options]="categoriesSignal()"
+        optionLabel="name"
+        inputId="category"
+        class="w-full">
+        <ng-template pTemplate="selectedItem" let-selectedOption>
+          <span *ngIf="selectedOption">
+            <i [class]="selectedOption.icon" class="pi mr-2"></i>
+            {{ selectedOption.name }}
+          </span>
+        </ng-template>
+        <ng-template let-category pTemplate="item">
+          <i [class]="category.icon" class="pi mr-2"></i>
           {{ category.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+        </ng-template>
+      </p-select>
+      <label for="category">Catégorie</label>
+    </p-floatlabel>
   </div>
 
-  <div class="flex gap-4">
-    <mat-form-field class="flex-1">
-      <mat-label>Montant</mat-label>
-      <input type="number" matInput formControlName="amount"/>
-      <span matSuffix>€</span>
-    </mat-form-field>
+  <!-- Amount, Date, and Frequency row - 3 columns -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <p-floatlabel>
+      <input pInputText type="number" formControlName="amount" id="amount" class="w-full" />
+      <label for="amount">Montant (€)</label>
+    </p-floatlabel>
 
-    <mat-form-field class="flex-1">
-      <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="datePicker" formControlName="date" />
-      <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
-      <mat-datepicker #datePicker></mat-datepicker>
-    </mat-form-field>
+    <p-floatlabel>
+      <p-datepicker
+        formControlName="date"
+        dateFormat="dd/mm/yy"
+        inputId="date"
+        class="w-full">
+      </p-datepicker>
+      <label for="date">Date</label>
+    </p-floatlabel>
 
-    <mat-form-field class="flex-1">
-      <mat-label>Fréquence</mat-label>
-      <mat-select formControlName="frequency">
-        <mat-option [value]="'once'">One time</mat-option>
-        <mat-option [value]="'weekly'">Weekly</mat-option>
-        <mat-option [value]="'monthly'">Monthly</mat-option>
-        <mat-option [value]="'yearly'">Yearly</mat-option>
-        <mat-option [value]="'none'">None</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <p-floatlabel>
+      <p-select
+        formControlName="frequency"
+        [options]="[
+          {label: 'One time', value: 'once'},
+          {label: 'Weekly', value: 'weekly'},
+          {label: 'Monthly', value: 'monthly'},
+          {label: 'Yearly', value: 'yearly'},
+          {label: 'None', value: 'none'}
+        ]"
+        optionLabel="label"
+        optionValue="value"
+        inputId="frequency"
+        class="w-full">
+      </p-select>
+      <label for="frequency">Fréquence</label>
+    </p-floatlabel>
   </div>
 
-  <button mat-flat-button color="primary" type="submit">
-    Submit
-  </button>
+  <!-- Submit button - right aligned -->
+  <div class="flex justify-end">
+    <p-button type="submit" label="Submit" severity="primary"></p-button>
+  </div>
 </form>

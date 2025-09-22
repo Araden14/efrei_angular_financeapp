@@ -14,24 +14,183 @@
 /* Quartz theme (modern, clean) */
 @import 'ag-grid-community/styles/ag-theme-quartz.css';
 
-/* Custom AG Grid theme overrides for better Material Design integration */
+/* Simplified AG Grid Dark Theme with Emerald Accents */
 .ag-theme-quartz {
-  --ag-background-color: #ffffff;
-  --ag-header-background-color: #f8fafc;
-  --ag-border-color: #e2e8f0;
-  --ag-header-foreground-color: #374151;
-  --ag-foreground-color: #111827;
-  --ag-row-hover-color: #f3f4f6;
-  --ag-selected-row-background-color: #dbeafe;
-  --ag-range-selection-background-color: rgba(59, 130, 246, 0.1);
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  --ag-background-color: #0f0f0f !important;
+  --ag-header-background-color: #1a1a1a !important;
+  --ag-border-color: #2a2a2a !important;
+  --ag-header-foreground-color: #e2e8f0 !important;
+  --ag-foreground-color: #cbd5e1 !important;
+  --ag-row-hover-color: #1e293b !important;
+  --ag-selected-row-background-color: #0f172a !important;
+  --ag-odd-row-background-color: #111111 !important;
+  --ag-active-color: #059669 !important; /* Emerald accent for hover and borders */
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0f0f0f !important;
+  border: 1px solid #2a2a2a !important;
 }
 
-/* Ensure proper grid layout */
+/* Header styling */
+.ag-theme-quartz .ag-header {
+  background: #1a1a1a !important;
+  border-bottom: 2px solid var(--ag-active-color) !important; /* Emerald accent */
+}
+
+.ag-theme-quartz .ag-header-cell {
+  background: #1a1a1a !important;
+  color: #e2e8f0 !important;
+  border-right: 1px solid #374151 !important;
+}
+
+/* Row styling */
+.ag-theme-quartz .ag-row {
+  background: #0f0f0f !important;
+  border-bottom: 1px solid #1f2937 !important;
+}
+
+.ag-theme-quartz .ag-row:nth-child(even) {
+  background: #111111 !important;
+}
+
+.ag-theme-quartz .ag-row:hover {
+  background: #1e293b !important;
+  border-left: 3px solid var(--ag-active-color) !important; /* Emerald accent on hover */
+}
+
+.ag-theme-quartz .ag-row.ag-row-selected {
+  background: #0f172a !important;
+  border-left: 3px solid var(--ag-active-color) !important; /* Emerald accent for selection */
+}
+
+/* Cell styling */
+.ag-theme-quartz .ag-cell {
+  color: #cbd5e1 !important;
+  border-right: 1px solid #1f2937 !important;
+}
+
+/* Header interactive elements - Filter and Sort buttons */
+.ag-theme-quartz .ag-header-cell .ag-sort-indicator-icon,
+.ag-theme-quartz .ag-header-cell .ag-sort-indicator-container .ag-icon,
+.ag-theme-quartz .ag-header-cell .ag-icon-sort {
+  color: #059669 !important; /* Emerald green for sort indicators */
+}
+
+.ag-theme-quartz .ag-header-cell:hover .ag-sort-indicator-icon,
+.ag-theme-quartz .ag-header-cell:hover .ag-sort-indicator-container .ag-icon,
+.ag-theme-quartz .ag-header-cell:hover .ag-icon-sort {
+  color: #10b981 !important; /* Brighter emerald on hover */
+}
+
+.ag-theme-quartz .ag-header-cell .ag-filter-icon,
+.ag-theme-quartz .ag-header-cell .ag-icon-filter {
+  color: #059669 !important; /* Emerald green for filter icons */
+}
+
+.ag-theme-quartz .ag-header-cell:hover .ag-filter-icon,
+.ag-theme-quartz .ag-header-cell:hover .ag-icon-filter {
+  color: #10b981 !important; /* Brighter emerald on hover */
+}
+
+.ag-theme-quartz .ag-floating-filter-button {
+  background: #059669 !important; /* Emerald green background */
+  border: 1px solid #047857 !important;
+  color: #ffffff !important;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 2px 6px;
+  transition: all 0.2s ease;
+}
+
+.ag-theme-quartz .ag-floating-filter-button:hover {
+  background: #047857 !important; /* Darker emerald on hover */
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3) !important;
+}
+
+.ag-theme-quartz .ag-floating-filter-button-button {
+  background: transparent !important;
+  border: none !important;
+  color: #ffffff !important;
+}
+
+/* Menu buttons in headers */
+.ag-theme-quartz .ag-header-cell-menu-button {
+  background: #059669 !important;
+  border: 1px solid #047857 !important;
+  color: #ffffff !important;
+  border-radius: 4px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.ag-theme-quartz .ag-header-cell-menu-button:hover {
+  background: #047857 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3) !important;
+}
+
+/* Button styling - Emerald green for visibility */
+.ag-theme-quartz .ag-paging-panel {
+  background: #1a1a1a !important;
+  border-top: 1px solid #2a2a2a !important;
+  color: #e2e8f0 !important;
+}
+
+.ag-theme-quartz .ag-paging-button {
+  background: #059669 !important; /* Emerald green background */
+  border: 1px solid #047857 !important;
+  color: #ffffff !important;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.ag-theme-quartz .ag-paging-button:hover {
+  background: #047857 !important; /* Darker emerald on hover */
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3) !important;
+}
+
+.ag-theme-quartz .ag-paging-button.ag-disabled {
+  background: #374151 !important;
+  border-color: #4b5563 !important;
+  color: #9ca3af !important;
+  opacity: 0.6;
+}
+
+/* Empty areas and overlays */
+.ag-theme-quartz .ag-overlay-panel {
+  background: #0f0f0f !important;
+  color: #cbd5e1 !important;
+}
+
+.ag-theme-quartz .ag-overlay-wrapper {
+  background: #0f0f0f !important;
+}
+
+.ag-theme-quartz .ag-body-viewport {
+  background: #0f0f0f !important;
+}
+
+/* Grid container with subtle emerald glow */
 .ag-theme-quartz .ag-root-wrapper {
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  border-radius: 12px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(5, 150, 105, 0.1); /* Subtle emerald border */
+  transition: all 0.3s ease;
+}
+
+.ag-theme-quartz .ag-root-wrapper:hover {
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(5, 150, 105, 0.2); /* Enhanced emerald glow on hover */
 }
 
 html, body {
@@ -42,5 +201,146 @@ html, body {
 
 *, *::before, *::after {
     box-sizing: border-box;
+}
+
+/* Admin Component Styles */
+.admin-card {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+  border: 1px solid rgba(5, 150, 105, 0.3);
+  border-radius: 16px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(5, 150, 105, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.admin-card:hover {
+  box-shadow:
+    0 12px 48px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(5, 150, 105, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.user-card, .category-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(51, 65, 85, 0.9) 100%);
+  border: 1px solid rgba(71, 85, 105, 0.5);
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.user-card:hover, .category-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 25px rgba(5, 150, 105, 0.15),
+    0 0 0 1px rgba(5, 150, 105, 0.2);
+}
+
+/* Navbar Centering */
+.centered-navbar .p-menubar {
+  justify-content: center;
+}
+
+.centered-navbar .p-menubar-start {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.centered-navbar .p-menubar-end {
+  position: absolute;
+  right: 1rem;
+}
+
+/* Animations */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes gradientText {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
+
+.animate-gradient {
+  animation: gradientText 3s ease infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Euro Note Glow Effect */
+.euro-note-glow {
+  filter: drop-shadow(0 0 10px rgba(5, 150, 105, 0.5));
+}
+
+/* PrimeNG Component Customizations */
+.p-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(51, 65, 85, 0.95) 100%);
+  border: 1px solid rgba(71, 85, 105, 0.5);
+  border-radius: 12px;
+}
+
+.p-card .p-card-header {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%);
+  border-bottom: 1px solid rgba(5, 150, 105, 0.3);
+}
+
+.p-tabview .p-tabview-panels {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.p-tabview .p-tabview-nav {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%);
+  border: 1px solid rgba(5, 150, 105, 0.3);
+  border-radius: 12px 12px 0 0;
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background: rgba(5, 150, 105, 0.1);
+  border-color: #059669;
+  color: #10b981;
+}
+
+.p-tabview .p-tabview-nav li .p-tabview-nav-link {
+  color: #cbd5e1;
+  transition: all 0.3s ease;
+}
+
+.p-tabview .p-tabview-nav li:hover .p-tabview-nav-link {
+  background: rgba(5, 150, 105, 0.05);
+  color: #10b981;
 }
 

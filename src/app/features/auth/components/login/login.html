@@ -1,23 +1,25 @@
 <div class="login-container">
   <div id="loginform">
     <h2 id="title">S'identifier</h2>
-    <mat-form-field class="login-field">
-      <mat-label>Email</mat-label>
-      <input [formControl]="email" matInput>
-    </mat-form-field>
-    <mat-form-field class="login-field">
-      <mat-label>Enter your password</mat-label>
-      <input [formControl]="password" matInput [type]="hide() ? 'password' : 'text'" />
-      <button
-        matIconButton
-        matSuffix
-        (click)="clickEvent($event)"
-        [attr.aria-label]="'Hide password'"
-        [attr.aria-pressed]="hide()"
-      >
-        <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
-      </button>
-    </mat-form-field>
-    <button mat-raised-button (click)="onSubmit()" class="login-submit-btn">se connecter</button>
+    <p-floatlabel class="login-field">
+      <input pInputText [formControl]="email" id="email" />
+      <label for="email">Email</label>
+    </p-floatlabel>
+    <p-floatlabel class="login-field">
+      <p-password
+        [formControl]="password"
+        [toggleMask]="true"
+        [feedback]="false"
+        styleClass="w-full"
+        inputId="password"
+        inputStyleClass="w-full">
+      </p-password>
+      <label for="password">Enter your password</label>
+    </p-floatlabel>
+    <p-button
+      (click)="onSubmit()"
+      label="se connecter"
+      styleClass="login-submit-btn w-full">
+    </p-button>
   </div>
 </div>

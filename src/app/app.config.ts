@@ -1,12 +1,20 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { routes } from './app.routes';
-import { provideNativeDateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MessageService } from 'primeng/api';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideNativeDateAdapter(),
-    { provide: MAT_DATE_LOCALE, useValue: 'fr-FR' }
+    provideAnimationsAsync(),
+    MessageService,
+    providePrimeNG({
+      theme: {
+        preset: Aura
+      }
+    })
   ]
 };
