@@ -1,0 +1,136 @@
+<navbar></navbar>
+
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>Administration Panel</h1>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tabs">
+    <button
+      class="tab-button"
+      [class.active]="activeTab() === 'users'"
+      (click)="setActiveTab('users')">
+      👥 Gestion des Utilisateurs
+    </button>
+    <button
+      class="tab-button"
+      [class.active]="activeTab() === 'categories'"
+      (click)="setActiveTab('categories')">
+      📂 Gestion des Catégories
+    </button>
+  </div>
+
+  <!-- Users Tab -->
+  <div *ngIf="activeTab() === 'users'" class="tab-content">
+    <div class="section-header">
+      <h2>Utilisateurs ({{ users().length }})</h2>
+    </div>
+
+    <div class="users-grid">
+      <div *ngFor="let user of users()" class="user-card">
+        <div class="user-info">
+          <div class="user-avatar">
+            {{ user.name.charAt(0).toUpperCase() }}
+          </div>
+          <div class="user-details">
+            <h3>{{ user.name | capitalize }}</h3>
+            <p class="user-email">{{ user.email }}</p>
+            <p class="user-role">
+              <span class="role-badge" [class.admin]="user.role === 'admin'">
+                {{ user.role | capitalize }}
+              </span>
+            </p>
+            <p class="user-date">
+              Créé le {{ user.createdAt | dateFormat:'datetime' }}
+            </p>
+          </div>
+        </div>
+        <div class="user-actions">
+          <button
+            class="btn btn-danger"
+            appConfirm
+            confirmMessage="Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible."
+            confirmTitle="Supprimer l'utilisateur"
+            (confirmed)="removeUser(user.id)">
+            🗑️ Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories Tab -->
+  <div *ngIf="activeTab() === 'categories'" class="tab-content">
+    <div class="section-header">
+      <h2>Catégories ({{ categories().length }})</h2>
+      <button class="btn btn-primary" (click)="toggleCategoryForm()">
+        {{ showCategoryForm() ? 'Annuler' : '+ Ajouter une catégorie' }}
+      </button>
+    </div>
+
+    <!-- Category Form -->
+    <div *ngIf="showCategoryForm()" class="category-form">
+      <h3>{{ editingCategoryIndex() !== null ? 'Modifier' : 'Ajouter' }} une catégorie</h3>
+      <form (ngSubmit)="editingCategoryIndex() !== null ? updateCategory() : addCategory()">
+        <div class="form-group">
+          <label for="categoryName">Nom de la catégorie</label>
+          <input
+            id="categoryName"
+            type="text"
+            [(ngModel)]="currentCategoryName"
+            name="name"
+            placeholder="Ex: Transport, Alimentation..."
+            required>
+        </div>
+        <div class="form-group">
+          <label for="categoryIcon">Icône (nom Material Icons)</label>
+          <input
+            id="categoryIcon"
+            type="text"
+            [(ngModel)]="currentCategoryIcon"
+            name="icon"
+            placeholder="Ex: shopping_cart, directions_car..."
+            required>
+          <small class="form-help">
+            Icônes disponibles: shopping_cart, flash_on, directions_car, local_hospital, movie, restaurant, school, spa, checkroom, home, more_horiz
+          </small>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success">
+            {{ editingCategoryIndex() !== null ? 'Modifier' : 'Ajouter' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+            Annuler
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Categories Grid -->
+    <div class="categories-grid">
+      <div *ngFor="let category of categories(); let i = index" class="category-card">
+        <div class="category-icon">
+          {{ category.icon | categoryIcon }}
+        </div>
+        <div class="category-info">
+          <h3>{{ category.name }}</h3>
+          <p class="category-icon-name">{{ category.icon }}</p>
+        </div>
+        <div class="category-actions">
+          <button class="btn btn-edit" (click)="editCategory(i)">
+            ✏️ Modifier
+          </button>
+          <button
+            class="btn btn-danger"
+            appConfirm
+            confirmMessage="Êtes-vous sûr de vouloir supprimer cette catégorie ?"
+            confirmTitle="Supprimer la catégorie"
+            (confirmed)="removeCategory(i)">
+            🗑️ Supprimer
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,119 @@
+<svg width="140mm" height="77mm" viewBox="0 0 1400 770" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <!-- Main background gradient for the €50 note -->
+    <linearGradient id="noteGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" /> <!-- Gold/Yellow -->
+      <stop offset="50%" style="stop-color:#FFA500;stop-opacity:1" /> <!-- Orange -->
+      <stop offset="100%" style="stop-color:#FF8C00;stop-opacity:1" /> <!-- Darker Orange -->
+    </linearGradient>
+
+    <!-- Subtle center highlight for depth -->
+    <radialGradient id="centerHighlight" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" style="stop-color:rgba(255,255,255,0.2)" />
+      <stop offset="100%" style="stop-color:rgba(255,255,255,0)" />
+    </radialGradient>
+
+    <!-- Diagonal line pattern for subtle texture -->
+    <pattern id="diagonalLines" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="10" stroke="#CC6600" stroke-width="0.5" />
+    </pattern>
+
+    <!-- Small star pattern for background detail -->
+    <pattern id="smallStars" patternUnits="userSpaceOnUse" width="30" height="30">
+      <path d="M15,0 L18.5,10 L29,10 L20.5,16.5 L24,27 L15,20 L6,27 L9.5,16.5 L1,10 L11.5,10 Z" fill="#fff" transform="scale(0.3)"/>
+      <path d="M0,0 L3.5,10 L14,10 L5.5,16.5 L9,27 L0,20 L-9,27 L-5.5,16.5 L-14,10 L-3.5,10 Z" fill="#fff" transform="translate(15,15) scale(0.2)"/>
+    </pattern>
+
+    <!-- Reusable euro symbol shape (simplified) -->
+    <g id="euroSignShape">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-4.75 9h-2.25v2h2.25c.45 1.72 2 3 3.75 3s3.3-1.28 3.75-3h2.25v-2h-2.25c-.45-1.72-2-3-3.75-3s-3.3 1.28-3.75 3z" />
+    </g>
+
+    <!-- Reusable stylized bridge arch element -->
+    <g id="bridgeArch">
+      <path d="M0,0 C20,10 80,10 100,0 L100,20 C80,30 20,30 0,20 Z" fill="url(#noteGradient)" stroke="#8B4513" stroke-width="2" />
+    </g>
+
+    <!-- A simple star for European stars motif -->
+    <path id="singleStar" d="M15,0 L18.5,10 L29,10 L20.5,16.5 L24,27 L15,20 L6,27 L9.5,16.5 L1,10 L11.5,10 Z" fill="#FFF"/>
+
+  </defs>
+
+  <!-- Main Note Background (Rounded Rectangle) -->
+  <rect x="0" y="0" width="1400" height="770" rx="30" ry="30" fill="url(#noteGradient)" stroke="#8B4513" stroke-width="5"/>
+  <rect x="5" y="5" width="1390" height="760" rx="25" ry="25" fill="none" stroke="#CC6600" stroke-width="2"/>
+
+  <!-- Center Highlight Overlay -->
+  <rect x="0" y="0" width="1400" height="770" fill="url(#centerHighlight)"/>
+
+  <!-- Left Side Elements: Denomination, "EURO" text, repeated official text -->
+  <g transform="translate(70, 70)">
+    <text x="0" y="0" font-family="sans-serif" font-weight="bold" font-size="100" fill="#FFF" stroke="#CC6600" stroke-width="4">50</text>
+    <text x="15" y="105" font-family="sans-serif" font-size="40" fill="#FFF">EURO</text>
+    <!-- Simplified design element box -->
+    <rect x="5" y="100" width="95" height="50" fill="#CC6600" opacity="0.1"/>
+
+    <!-- Repeated official text (simplified) -->
+    <text x="50" y="200" font-family="monospace" font-size="20" fill="#FFF" text-anchor="middle">
+      <tspan x="50" dy="0">BCE ECB EZB EKT EKP</tspan>
+      <tspan x="50" dy="25">BCE ECB EZB EKT EKP</tspan>
+      <tspan x="50" dy="25">BCE ECB EZB EKT EKP</tspan>
+    </text>
+  </g>
+
+  <!-- Right Side Corner Denomination (Mirrored for design aesthetics) -->
+  <g transform="translate(1330, 70) scale(-1,1)">
+    <text x="0" y="0" font-family="sans-serif" font-weight="bold" font-size="100" fill="#FFF" stroke="#CC6600" stroke-width="4" text-anchor="end">50</text>
+  </g>
+  <!-- Right Side "EURO" text and Euro Symbol -->
+  <g transform="translate(1200, 650)">
+      <text x="0" y="0" font-family="sans-serif" font-size="40" fill="#FFF" text-anchor="end">EURO</text>
+      <use xlink:href="#euroSignShape" transform="scale(3) translate(-10, -5)" fill="#FFF"/>
+  </g>
+
+  <!-- Large Central Denomination "50" -->
+  <text x="700" y="500" font-family="serif" font-weight="bolder" font-size="450" fill="#FFF" stroke="#8B4513" stroke-width="8" text-anchor="middle" letter-spacing="-20">50</text>
+
+  <!-- Additional Euro Symbols -->
+  <use xlink:href="#euroSignShape" transform="translate(450, 250) scale(4)" fill="#FFF" />
+  <use xlink:href="#euroSignShape" transform="translate(900, 250) scale(4)" fill="#FFF" />
+
+  <!-- Stylized Bridge Motif (Representing the architectural theme) -->
+  <g transform="translate(550, 150) scale(3)">
+    <use xlink:href="#bridgeArch" transform="translate(0, 0)"/>
+    <use xlink:href="#bridgeArch" transform="translate(20, 0)"/>
+    <use xlink:href="#bridgeArch" transform="translate(40, 0)"/>
+    <rect x="0" y="10" width="160" height="10" fill="#CC6600"/>
+  </g>
+
+  <!-- Stars of Europe motifs (simplified from actual flag) -->
+  <g transform="translate(100, 300)">
+    <use xlink:href="#singleStar" transform="scale(1.5)"/>
+    <use xlink:href="#singleStar" transform="translate(40, 10) scale(1)"/>
+    <use xlink:href="#singleStar" transform="translate(20, 50) scale(0.8)"/>
+  </g>
+  <g transform="translate(1250, 300)">
+    <use xlink:href="#singleStar" transform="scale(1.5)"/>
+    <use xlink:href="#singleStar" transform="translate(-40, 10) scale(1)"/>
+    <use xlink:href="#singleStar" transform="translate(-20, 50) scale(0.8)"/>
+  </g>
+
+  <!-- Simplified Map Outline / Globe Fragment (from watermark area) -->
+  <path d="M300 400 Q350 300 450 350 T600 450 T550 550 Q450 600 300 500 Z" fill="#CC6600" opacity="0.3"/>
+  <path d="M1100 400 Q1050 300 950 350 T800 450 T850 550 Q950 600 1100 500 Z" fill="#CC6600" opacity="0.3"/>
+
+  <!-- Decorative background patterns overlay -->
+  <rect x="0" y="0" width="1400" height="770" fill="url(#diagonalLines)" opacity="0.05"/>
+  <rect x="0" y="0" width="1400" height="770" fill="url(#smallStars)" opacity="0.08"/>
+
+  <!-- Simplified signature line and text -->
+  <g transform="translate(600, 650)">
+    <line x1="0" y1="0" x2="200" y2="0" stroke="#FFF" stroke-width="2"/>
+    <text x="100" y="20" font-family="serif" font-size="20" fill="#FFF" text-anchor="middle">PRESIDENT</text>
+  </g>
+
+  <!-- Dummy Serial/Banknote numbers -->
+  <text x="100" y="700" font-family="monospace" font-size="30" fill="#FFF" stroke="#CC6600" stroke-width="0.5">X1234567890</text>
+  <text x="1300" y="700" font-family="monospace" font-size="30" fill="#FFF" stroke="#CC6600" stroke-width="0.5" text-anchor="end">X0987654321</text>
+
+</svg>
