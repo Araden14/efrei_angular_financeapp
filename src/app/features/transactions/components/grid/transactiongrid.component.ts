@@ -1,12 +1,17 @@
 import { AgGridAngular } from 'ag-grid-angular';
-import type { ColDef, GridOptions, GridApi, GridReadyEvent, GetContextMenuItemsParams, DefaultMenuItem, MenuItemDef, Module } from 'ag-grid-community';
+import type { ColDef, GridOptions, GridApi, GridReadyEvent, GetContextMenuItemsParams, DefaultMenuItem, MenuItemDef, Module, ChartType } from 'ag-grid-community';
 import { Component, inject } from '@angular/core';
 import { IndexedDBService } from '../../../indexdb/services/indexdb.service';
 import { GridStore } from './grid.store';
 import { ModuleRegistry, themeMaterial, themeQuartz } from 'ag-grid-community';
 import { AllEnterpriseModule } from 'ag-grid-enterprise';
+import { CategoryIconPipe } from '../../../../shared/pipes/category-icon.pipe';
+import { ChartToolPanelsDef } from 'ag-grid-community';
+import { IntegratedChartsModule } from 'ag-grid-enterprise';
+import { AgChartsModule } from 'ag-charts-angular';
+import { AgChartsEnterpriseModule } from 'ag-charts-enterprise';
 
-ModuleRegistry.registerModules([AllEnterpriseModule as Module]);
+ModuleRegistry.registerModules([AllEnterpriseModule, IntegratedChartsModule.with(AgChartsEnterpriseModule)]);
 
 interface IOlympicData {
     athlete: string;
@@ -30,7 +35,7 @@ interface ICellSelectionBounds {
 type AddRowPosition = 'above' | 'below';
 @Component({
     selector: 'transactions-grid',
-    imports: [AgGridAngular],
+    imports: [AgGridAngular, CategoryIconPipe, AgChartsModule],
     providers: [IndexedDBService],
     templateUrl: './transactiongrid.component.html',
 })
@@ -38,6 +43,7 @@ export class TransactionGridComponent {
     constructor(private DBservice: IndexedDBService) {}
     private gridApi!: GridApi;
     store = inject(GridStore);
+    private categoryIconPipe = new CategoryIconPipe();
 
     async ngOnInit() {
         const list = await this.DBservice.getAllTransactions();
@@ -58,16 +64,34 @@ export class TransactionGridComponent {
         paginationPageSize: 10,
         paginationPageSizeSelector: [10, 20, 50],
         suppressHorizontalScroll: false,
-        enableCellTextSelection: true,
         ensureDomOrder: true,
+        tooltipShowDelay: 0,
+        tooltipHideDelay: 2000,
+        enableCharts: true,
+        cellSelection: true,
     };
-
+    chartToolPanelsDef: ChartToolPanelsDef = {
+      defaultToolPanel: "settings",
+    };
     // Column Definitions: Defines the columns to be displayed.
     colDefs: ColDef[] = [
         {
-            field: "category.name",
+            field: "name",
+            headerName: "Nom",
+            minWidth: 150
+        },
+        {
+            field: "category.icon",
             headerName: "Catégorie",
-            minWidth: 120
+            minWidth: 120,
+            cellRenderer: (params: any) => {
+                const iconName = params.value;
+                const emoji = this.categoryIconPipe.transform(iconName);
+                return `<span style="font-size: 18px;">${emoji}</span>`;
+            },
+            tooltipValueGetter: (params: any) => {
+                return params.data?.category?.name || '';
+            }
         },
         {
             field: "amount",
@@ -82,18 +106,13 @@ export class TransactionGridComponent {
             valueFormatter: (params) => new Date(params.value).toLocaleDateString('fr-FR')
         },
         {
-            field: "name",
-            headerName: "Nom",
-            minWidth: 150
+            field: "type",
+            headerName: "Type",
+            minWidth: 100
         },
         {
             field: "frequency",
             headerName: "Fréquence",
-            minWidth: 100
-        },
-        {
-            field: "type",
-            headerName: "Type",
             minWidth: 100
         }
     ];
@@ -170,21 +189,61 @@ export class TransactionGridComponent {
         // Get selection bounds (either from cell range or clicked row)
         const { startIndex, endIndex, rowCount } =
           this.getCellSelectionBounds(params);
-    
+
         // Create pluralized label for menu items
         const rowLabel = `${rowCount} Row${rowCount !== 1 ? 's' : ''}`;
-    
+
         // Build context menu with row manipulation options
-        return [
+        const menuItems: (DefaultMenuItem | MenuItemDef)[] = [
           {
             name: `Delete ${rowLabel}`,
             action: () => this.deleteRows(startIndex, endIndex),
             icon: '<span class="ag-icon ag-icon-minus"></span>',
           },
-          // Include default menu items (copy, paste, export, etc.)
-          ...(params.defaultItems ?? []),
         ];
+
+        // Add chart menu items if cells are selected
+        const cellRanges = this.gridApi.getCellRanges();
+        if (cellRanges && cellRanges.length > 0) {
+          menuItems.push({
+            name: 'Chart Range',
+            subMenu: [
+              {
+                name: 'Bar Chart',
+                action: () => this.createChart('groupedColumn'),
+              },
+              {
+                name: 'Line Chart',
+                action: () => this.createChart('line'),
+              },
+              {
+                name: 'Pie Chart',
+                action: () => this.createChart('pie'),
+              },
+              {
+                name: 'Area Chart',
+                action: () => this.createChart('area'),
+              },
+            ],
+            icon: '<span class="ag-icon ag-icon-chart"></span>',
+          });
+        }
+
+        // Include default menu items (copy, paste, export, etc.)
+        menuItems.push(...(params.defaultItems ?? []));
+
+        return menuItems;
       };
+
+      private createChart(chartType: ChartType) {
+        const cellRanges = this.gridApi.getCellRanges();
+        if (cellRanges && cellRanges.length > 0) {
+          this.gridApi.createRangeChart({
+            cellRange: cellRanges[0],
+            chartType: chartType,
+          });
+        }
+      }
       
       private addRows(rowCount: number, startIndex?: number, endIndex?: number) {
         // Create empty row objects for insertion

@@ -35,7 +35,7 @@ import { FloatLabel } from 'primeng/floatlabel';
       category : new FormControl<Category>({name: "", icon: 'more_horiz'}, { nonNullable: true, validators: [Validators.required] }),
       amount: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required]}),
       date: new FormControl<Date>(new Date(), { nonNullable: true, validators: [Validators.required] }),
-      name: new FormControl<string>('Nom', { nonNullable: true, validators: [Validators.required] }),
+      name: new FormControl<string>('', {nonNullable: true, validators: [Validators.required] }),
       type: new FormControl<'income' | 'expense'>('expense', { nonNullable: true, validators: [Validators.required] }),
       frequency: new FormControl<'once' | 'monthly' | 'yearly' | 'weekly' | 'none'>('none', { nonNullable: true, validators: [Validators.required] }),
     })

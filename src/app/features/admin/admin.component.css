@@ -1,56 +1,204 @@
+/* Dark theme overrides for admin component */
 .admin-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: rgba(15, 23, 42, 0.95);
+  color: #e2e8f0;
+  border-radius: 16px;
+  padding: 1rem;
 }
 
-.admin-header {
-  text-align: center;
-  margin-bottom: 30px;
+/* PrimeNG Tabs styling overrides */
+:host ::ng-deep .p-tabs .p-tablist {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%) !important;
+  border: 1px solid rgba(5, 150, 105, 0.3) !important;
+  border-radius: 12px 12px 0 0 !important;
+  padding: 0.5rem !important;
 }
 
-.admin-header h1 {
-  color: #2c3e50;
-  font-size: 2.5rem;
+:host ::ng-deep .p-tabs .p-tablist .p-tab {
+  color: #cbd5e1 !important;
+  transition: all 0.3s ease !important;
+  background: transparent !important;
+  border: none !important;
+  margin: 0 0.25rem !important;
+  border-radius: 8px !important;
+}
+
+:host ::ng-deep .p-tabs .p-tablist .p-tab:hover {
+  background: rgba(5, 150, 105, 0.1) !important;
+  color: #10b981 !important;
+}
+
+:host ::ng-deep .p-tabs .p-tablist .p-tab[aria-selected="true"] {
+  background: rgba(5, 150, 105, 0.2) !important;
+  color: #10b981 !important;
+  font-weight: 600 !important;
+}
+
+:host ::ng-deep .p-tabs .p-tablist .p-tab .flex {
+  color: inherit !important;
+}
+
+:host ::ng-deep .p-tabs .p-tablist .p-tab i {
+  color: inherit !important;
+}
+
+:host ::ng-deep .p-tabs .p-tabpanels {
+  background: transparent !important;
+  border: none !important;
+  padding: 1.5rem 0 !important;
+}
+
+/* Remove unused styles */
+
+/* Card styling overrides */
+:host ::ng-deep .p-card {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(51, 65, 85, 0.95) 100%) !important;
+  border: 1px solid rgba(71, 85, 105, 0.5) !important;
+  border-radius: 12px !important;
+  color: #e2e8f0 !important;
+}
+
+:host ::ng-deep .p-card .p-card-header {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%) !important;
+  border-bottom: 1px solid rgba(5, 150, 105, 0.3) !important;
+  color: #e2e8f0 !important;
+}
+
+:host ::ng-deep .p-card .p-card-body {
+  color: #e2e8f0 !important;
+}
+
+/* Dialog styling */
+:host ::ng-deep .p-dialog {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(51, 65, 85, 0.95) 100%) !important;
+  border: 1px solid rgba(71, 85, 105, 0.5) !important;
+  color: #e2e8f0 !important;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-header {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%) !important;
+  border-bottom: 1px solid rgba(5, 150, 105, 0.3) !important;
+  color: #e2e8f0 !important;
+}
+
+/* Input styling */
+:host ::ng-deep .p-inputtext {
+  background: rgba(15, 23, 42, 0.8) !important;
+  border: 1px solid rgba(71, 85, 105, 0.5) !important;
+  color: #e2e8f0 !important;
+}
+
+:host ::ng-deep .p-inputtext:focus {
+  border-color: #059669 !important;
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.2) !important;
+}
+
+/* Better spacing for content */
+.users-grid {
+  display: grid;
+  gap: 1rem;
+  padding: 0 1rem;
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 12px;
   margin: 0;
 }
 
-/* Tabs */
-.tabs {
-  display: flex;
-  margin-bottom: 30px;
-  border-bottom: 2px solid #e1e8ed;
+.categories-grid {
+  display: grid;
+  gap: 1rem;
+  padding: 0 1rem;
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 12px;
+  margin: 0;
 }
 
-.tab-button {
-  flex: 1;
-  padding: 15px 20px;
-  background: none;
-  border: none;
-  border-bottom: 3px solid transparent;
-  font-size: 1.1rem;
-  font-weight: 500;
-  cursor: pointer;
+/* New card container styles */
+.user-card-container,
+.category-card-container {
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  border-radius: 12px;
+  overflow: hidden;
   transition: all 0.3s ease;
-  color: #657786;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.tab-button:hover {
-  background-color: #f5f8fa;
-  color: #14171a;
+.user-card-container:hover,
+.category-card-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  border-color: rgba(5, 150, 105, 0.5);
 }
 
-.tab-button.active {
-  color: #1da1f2;
-  border-bottom-color: #1da1f2;
+.icon-container {
+  position: relative;
 }
 
-.tab-content {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 25px;
+.icon-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20px;
+  background: linear-gradient(to right, transparent, rgba(15, 23, 42, 0.95));
+}
+
+/* User and category card improvements */
+:host ::ng-deep .user-card .p-card-body,
+:host ::ng-deep .category-card .p-card-body {
+  padding: 1.5rem !important;
+}
+
+/* Better chip styling */
+:host ::ng-deep .p-chip {
+  background: rgba(5, 150, 105, 0.8) !important;
+  color: white !important;
+  border-radius: 1rem !important;
+  font-size: 0.8rem !important;
+  padding: 0.25rem 0.75rem !important;
+}
+
+:host ::ng-deep .p-chip.bg-blue-600 {
+  background: rgba(59, 130, 246, 0.8) !important;
+}
+
+/* Button styling improvements */
+:host ::ng-deep .p-button {
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+:host ::ng-deep .p-button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Success button (emerald green for edit buttons) */
+:host ::ng-deep .p-button.p-button-success {
+  background: #059669 !important;
+  border-color: #047857 !important;
+  color: white !important;
+}
+
+:host ::ng-deep .p-button.p-button-success:hover {
+  background: #047857 !important;
+  border-color: #065f46 !important;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4) !important;
+}
+
+/* Material icons styling */
+.material-icons {
+  font-family: 'Material Icons' !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  font-size: 1.5rem !important;
+  line-height: 1 !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+  display: inline-block !important;
+  white-space: nowrap !important;
+  word-wrap: normal !important;
+  direction: ltr !important;
 }
 
 /* Section Headers */

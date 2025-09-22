@@ -7,13 +7,6 @@
   --font-family-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New", monospace;
 }
 
-/* AG Grid Core Styles - Required for ag-Grid to work */
-@import 'ag-grid-community/styles/ag-grid.css';
-
-/* AG Grid Theme - Choose one theme (you can switch between them) */
-/* Quartz theme (modern, clean) */
-@import 'ag-grid-community/styles/ag-theme-quartz.css';
-
 /* Simplified AG Grid Dark Theme with Emerald Accents */
 .ag-theme-quartz {
   --ag-background-color: #0f0f0f !important;

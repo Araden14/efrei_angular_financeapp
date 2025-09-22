@@ -1,136 +1,172 @@
 <navbar></navbar>
 
-<div class="admin-container">
-  <div class="admin-header">
-    <h1>Administration Panel</h1>
-  </div>
-
-  <!-- Tab Navigation -->
-  <div class="tabs">
-    <button
-      class="tab-button"
-      [class.active]="activeTab() === 'users'"
-      (click)="setActiveTab('users')">
-      👥 Gestion des Utilisateurs
-    </button>
-    <button
-      class="tab-button"
-      [class.active]="activeTab() === 'categories'"
-      (click)="setActiveTab('categories')">
-      📂 Gestion des Catégories
-    </button>
-  </div>
-
-  <!-- Users Tab -->
-  <div *ngIf="activeTab() === 'users'" class="tab-content">
-    <div class="section-header">
-      <h2>Utilisateurs ({{ users().length }})</h2>
+<div class="mt-[3rem] flex items-center justify-center">
+  <div class="w-full px-[5rem] h-[80vh] flex gap-6 admin-container">
+    <div class="w-1/4 admin-header">
+      <p-card header="Administration Panel" [style]="{ width: '100%', 'min-height': 'calc(80vh - 3rem)' }" class="admin-card">
+        <p>
+          Gérer les utilisateurs et les catégories de dépenses de l'application.
+        </p>
+      </p-card>
     </div>
+    <div class="w-3/4 h-full">
+      <p-tabs [value]="activeTab() === 'users' ? '0' : '1'" (valueChange)="setActiveTab($event === '0' ? 'users' : 'categories')" styleClass="w-full h-full">
+        <p-tablist>
+          <p-tab value="0">
+            <div class="flex align-items-center gap-2">
+              <i class="pi pi-users"></i>
+              <span>Utilisateurs ({{ users().length }})</span>
+            </div>
+          </p-tab>
+          <p-tab value="1">
+            <div class="flex align-items-center gap-2">
+              <i class="pi pi-folder"></i>
+              <span>Catégories ({{ categories().length }})</span>
+            </div>
+          </p-tab>
+        </p-tablist>
+        <p-tabpanels>
+          <p-tabpanel value="0">
+            <div class="users-grid">
+              <div *ngFor="let user of users()" class="user-card-container mb-4">
+                <div class="flex h-24 rounded-lg overflow-hidden">
+                  <!-- Icon container with gradient background -->
+                  <div class="icon-container bg-gradient-to-r from-emerald-600 via-emerald-500 to-slate-900 flex items-center justify-center w-32 flex-shrink-0">
+                    <div class="text-white text-2xl font-bold">
+                      {{ user.name.charAt(0).toUpperCase() }}
+                    </div>
+                  </div>
+                  <!-- Content container -->
+                  <div class="flex-1 bg-slate-900 flex items-center justify-between px-4">
+                    <div class="flex-1">
+                      <h3 class="text-lg font-semibold text-white">{{ user.name | capitalize }}</h3>
+                      <p class="text-sm text-gray-400">{{ user.email }}</p>
+                      <div class="mt-1 flex items-center gap-2">
+                        <p-chip [label]="user.role | capitalize" [styleClass]="user.role === 'admin' ? 'bg-emerald-600 text-white' : 'bg-blue-600 text-white'"></p-chip>
+                        <span class="text-xs text-gray-400">
+                          Créé le {{ user.createdAt | dateFormat:'datetime' }}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="flex-shrink-0">
+                      <p-button
+                        icon="pi pi-trash"
+                        severity="danger"
+                        size="small"
+                        (click)="removeUser(user.id)"
+                        pTooltip="Supprimer l'utilisateur"
+                        tooltipPosition="top"
+                      ></p-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-tabpanel>
+          <p-tabpanel value="1">
+            <div class="section-header flex justify-between items-center mb-4">
+              <h2 class="text-xl font-bold text-gray-100">Catégories</h2>
+              <p-button
+                [label]="showCategoryForm() ? 'Annuler' : 'Ajouter une catégorie'"
+                [icon]="showCategoryForm() ? 'pi pi-times' : 'pi pi-plus'"
+                [severity]="showCategoryForm() ? 'secondary' : 'success'"
+                (click)="toggleCategoryForm()"
+              ></p-button>
+            </div>
 
-    <div class="users-grid">
-      <div *ngFor="let user of users()" class="user-card">
-        <div class="user-info">
-          <div class="user-avatar">
-            {{ user.name.charAt(0).toUpperCase() }}
-          </div>
-          <div class="user-details">
-            <h3>{{ user.name | capitalize }}</h3>
-            <p class="user-email">{{ user.email }}</p>
-            <p class="user-role">
-              <span class="role-badge" [class.admin]="user.role === 'admin'">
-                {{ user.role | capitalize }}
-              </span>
-            </p>
-            <p class="user-date">
-              Créé le {{ user.createdAt | dateFormat:'datetime' }}
-            </p>
-          </div>
-        </div>
-        <div class="user-actions">
-          <button
-            class="btn btn-danger"
-            appConfirm
-            confirmMessage="Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible."
-            confirmTitle="Supprimer l'utilisateur"
-            (confirmed)="removeUser(user.id)">
-            🗑️ Supprimer
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+            <p-dialog
+              [visible]="showCategoryForm()"
+              [modal]="true"
+              [style]="{ width: '400px' }"
+              [header]="editingCategory() !== null ? 'Modifier une catégorie' : 'Ajouter une catégorie'"
+              (onHide)="cancelEdit()"
+            >
+              <form (ngSubmit)="editingCategory() !== null ? updateCategory() : addCategory()">
+                <div class="p-fluid">
+                  <div class="field mb-4">
+                    <label for="categoryName" class="block text-gray-300 text-sm font-bold mb-2">Nom de la catégorie</label>
+                    <input
+                      id="categoryName"
+                      type="text"
+                      pInputText
+                      [(ngModel)]="currentCategoryName"
+                      name="name"
+                      placeholder="Ex: Transport, Alimentation..."
+                      required
+                      class="w-full"
+                    />
+                  </div>
+                  <div class="field mb-4">
+                    <label for="categoryIcon" class="block text-gray-300 text-sm font-bold mb-2">Icône (nom Material Icons)</label>
+                    <input
+                      id="categoryIcon"
+                      type="text"
+                      pInputText
+                      [(ngModel)]="currentCategoryIcon"
+                      name="icon"
+                      placeholder="Ex: shopping_cart, directions_car..."
+                      required
+                      class="w-full"
+                    />
+                    <small class="block text-gray-500 mt-2">
+                      Icônes disponibles: shopping_cart, flash_on, directions_car, local_hospital, movie, restaurant, school, spa, checkroom, home, more_horiz
+                    </small>
+                  </div>
+                </div>
+                <div class="flex justify-end gap-2 mt-4">
+                  <p-button
+                    type="button"
+                    label="Annuler"
+                    severity="secondary"
+                    (click)="cancelEdit()"
+                  ></p-button>
+                  <p-button
+                    type="submit"
+                    [label]="editingCategory() !== null ? 'Modifier' : 'Ajouter'"
+                    severity="success"
+                  ></p-button>
+                </div>
+              </form>
+            </p-dialog>
 
-  <!-- Categories Tab -->
-  <div *ngIf="activeTab() === 'categories'" class="tab-content">
-    <div class="section-header">
-      <h2>Catégories ({{ categories().length }})</h2>
-      <button class="btn btn-primary" (click)="toggleCategoryForm()">
-        {{ showCategoryForm() ? 'Annuler' : '+ Ajouter une catégorie' }}
-      </button>
-    </div>
-
-    <!-- Category Form -->
-    <div *ngIf="showCategoryForm()" class="category-form">
-      <h3>{{ editingCategory() !== null ? 'Modifier' : 'Ajouter' }} une catégorie</h3>
-      <form (ngSubmit)="editingCategory() !== null ? updateCategory() : addCategory()">
-        <div class="form-group">
-          <label for="categoryName">Nom de la catégorie</label>
-          <input
-            id="categoryName"
-            type="text"
-            [(ngModel)]="currentCategoryName"
-            name="name"
-            placeholder="Ex: Transport, Alimentation..."
-            required>
-        </div>
-        <div class="form-group">
-          <label for="categoryIcon">Icône (nom Material Icons)</label>
-          <input
-            id="categoryIcon"
-            type="text"
-            [(ngModel)]="currentCategoryIcon"
-            name="icon"
-            placeholder="Ex: shopping_cart, directions_car..."
-            required>
-          <small class="form-help">
-            Icônes disponibles: shopping_cart, flash_on, directions_car, local_hospital, movie, restaurant, school, spa, checkroom, home, more_horiz
-          </small>
-        </div>
-        <div class="form-actions">
-          <button type="submit" class="btn btn-success">
-            {{ editingCategory() !== null ? 'Modifier' : 'Ajouter' }}
-          </button>
-          <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
-            Annuler
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <!-- Categories Grid -->
-    <div class="categories-grid">
-      <div *ngFor="let category of categories()" class="category-card">
-        <div class="category-icon">
-          {{ category.icon | categoryIcon }}
-        </div>
-        <div class="category-info">
-          <h3>{{ category.name }}</h3>
-          <p class="category-icon-name">{{ category.icon }}</p>
-        </div>
-        <div class="category-actions">
-          <button class="btn btn-edit" (click)="editCategory(category)">
-            ✏️ Modifier
-          </button>
-          <button
-            class="btn btn-danger"
-            appConfirm
-            confirmMessage="Êtes-vous sûr de vouloir supprimer cette catégorie ?"
-            confirmTitle="Supprimer la catégorie"
-            (confirmed)="removeCategory(category)">
-            🗑️ Supprimer
-          </button>
-        </div>
-      </div>
+            <div class="categories-grid mt-6">
+              <div *ngFor="let category of categories()" class="category-card-container mb-4">
+                <div class="flex h-20 rounded-lg overflow-hidden">
+                  <!-- Icon container with gradient background -->
+                  <div class="icon-container bg-gradient-to-r from-emerald-600 via-emerald-900 to-slate-900 flex items-center justify-center w-32 flex-shrink-0">
+                    <i class="material-icons text-white text-3xl">{{ category.icon }}</i>
+                  </div>
+                  <!-- Content container -->
+                  <div class="flex-1 bg-slate-900 flex items-center justify-between px-4">
+                    <div class="flex-1">
+                      <h3 class="text-lg font-semibold text-white">{{ category.name }}</h3>
+                      <p class="text-sm text-gray-400">{{ category.icon }}</p>
+                    </div>
+                    <div class="flex gap-2 flex-shrink-0">
+                      <p-button
+                        icon="pi pi-pencil"
+                        severity="success"
+                        size="small"
+                        (click)="editCategory(category)"
+                        pTooltip="Modifier la catégorie"
+                        tooltipPosition="top"
+                      ></p-button>
+                      <p-button
+                        icon="pi pi-trash"
+                        severity="danger"
+                        size="small"
+                        (click)="removeCategory(category)"
+                        pTooltip="Supprimer la catégorie"
+                        tooltipPosition="top"
+                      ></p-button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
     </div>
   </div>
 </div>

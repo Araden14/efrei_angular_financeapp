@@ -5,17 +5,17 @@ import { FormsModule } from '@angular/forms';
 import { Navbar } from '../navbar/navbar.component';
 import { AdminService } from './admin.service';
 import { DateFormatPipe } from '../../shared/pipes/date-format.pipe';
-import { CategoryIconPipe } from '../../shared/pipes/category-icon.pipe';
 import { CapitalizePipe } from '../../shared/pipes/capitalize.pipe';
-import { ConfirmDirective } from '../../shared/directives/confirm.directive';
 import { Category } from '../../data/categories';
 import { CategoryService } from '../../shared/services/category.service';
 // PrimeNG imports
-import { Card } from 'primeng/card';
-import { Tabs } from 'primeng/tabs';
-import { TabPanel } from 'primeng/tabs';
-import { Button } from 'primeng/button';
-import { Chip } from 'primeng/chip';
+import { CardModule } from 'primeng/card';
+import { TabsModule } from 'primeng/tabs';
+import { ButtonModule } from 'primeng/button';
+import { ChipModule } from 'primeng/chip';
+import { InputTextModule } from 'primeng/inputtext';
+import { DialogModule } from 'primeng/dialog';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'admin',
@@ -27,14 +27,15 @@ import { Chip } from 'primeng/chip';
     FormsModule,
     Navbar,
     DateFormatPipe,
-    CategoryIconPipe,
     CapitalizePipe,
     // PrimeNG components
-    Card,
-    Tabs,
-    TabPanel,
-    Button,
-    Chip
+    CardModule,
+    TabsModule,
+    ButtonModule,
+    ChipModule,
+    InputTextModule,
+    DialogModule,
+    TooltipModule,
   ]
 })
 export class AdminComponent {
