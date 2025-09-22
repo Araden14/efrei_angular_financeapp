@@ -9,6 +9,7 @@ import { CategoryIconPipe } from '../../shared/pipes/category-icon.pipe';
 import { CapitalizePipe } from '../../shared/pipes/capitalize.pipe';
 import { ConfirmDirective } from '../../shared/directives/confirm.directive';
 import { Category } from '../../data/categories';
+import { CategoryService } from '../../shared/services/category.service';
 
 @Component({
   selector: 'admin',
@@ -27,19 +28,20 @@ import { Category } from '../../data/categories';
 })
 export class AdminComponent {
   private adminService = inject(AdminService);
+  private categoryService = inject(CategoryService)
 
   // Reactive signals
   users = this.adminService.users;
-  categories = this.adminService.categories;
+  categories = this.categoryService.categories;
 
   // UI state
   activeTab = signal<'users' | 'categories'>('users');
   showCategoryForm = signal(false);
-  editingCategoryIndex = signal<number | null>(null);
+  editingCategory = signal<Category | null>(null);
+  originalEditingCategory = signal<Category | null>(null);
 
   // Form data
   newCategory = signal<Category>({ name: '', icon: '' });
-  editingCategory = signal<Category>({ name: '', icon: '' });
 
   // Users methods
   removeUser(userId: number): void {
@@ -49,36 +51,36 @@ export class AdminComponent {
   // Categories methods
   addCategory(): void {
     if (this.newCategory().name.trim() && this.newCategory().icon.trim()) {
-      this.adminService.addCategory({ ...this.newCategory() });
+      this.categoryService.addCategory({ ...this.newCategory() });
       this.newCategory.set({ name: '', icon: '' });
       this.showCategoryForm.set(false);
     }
   }
 
-  editCategory(index: number): void {
-    const category = this.categories()[index];
+  editCategory(category: Category): void {
+    this.originalEditingCategory.set({ ...category });
     this.editingCategory.set({ ...category });
-    this.editingCategoryIndex.set(index);
     this.showCategoryForm.set(true);
   }
 
   updateCategory(): void {
-    const index = this.editingCategoryIndex();
-    if (index !== null && this.editingCategory().name.trim() && this.editingCategory().icon.trim()) {
-      this.adminService.updateCategory(index, { ...this.editingCategory() });
+    const originalCategory = this.originalEditingCategory();
+    const updatedCategory = this.editingCategory();
+    if (originalCategory && updatedCategory && updatedCategory.name.trim() && updatedCategory.icon.trim()) {
+      this.categoryService.updateCategory(originalCategory, { ...updatedCategory });
       this.cancelEdit();
     }
   }
 
-  removeCategory(index: number): void {
-    this.adminService.removeCategory(index);
+  removeCategory(category: Category): void {
+    this.categoryService.deleteCategory(category);
   }
 
   cancelEdit(): void {
     this.showCategoryForm.set(false);
-    this.editingCategoryIndex.set(null);
+    this.editingCategory.set(null);
+    this.originalEditingCategory.set(null);
     this.newCategory.set({ name: '', icon: '' });
-    this.editingCategory.set({ name: '', icon: '' });
   }
 
   // UI methods
@@ -95,24 +97,24 @@ export class AdminComponent {
 
   // Computed properties for form binding
   get currentCategoryName(): string {
-    return this.editingCategoryIndex() !== null ? this.editingCategory().name : this.newCategory().name;
+    return this.editingCategory() !== null ? this.editingCategory()!.name : this.newCategory().name;
   }
 
   set currentCategoryName(value: string) {
-    if (this.editingCategoryIndex() !== null) {
-      this.editingCategory.update(cat => ({ ...cat, name: value }));
+    if (this.editingCategory() !== null) {
+      this.editingCategory.update(cat => ({ ...cat!, name: value }));
     } else {
       this.newCategory.update(cat => ({ ...cat, name: value }));
     }
   }
 
   get currentCategoryIcon(): string {
-    return this.editingCategoryIndex() !== null ? this.editingCategory().icon : this.newCategory().icon;
+    return this.editingCategory() !== null ? this.editingCategory()!.icon : this.newCategory().icon;
   }
 
   set currentCategoryIcon(value: string) {
-    if (this.editingCategoryIndex() !== null) {
-      this.editingCategory.update(cat => ({ ...cat, icon: value }));
+    if (this.editingCategory() !== null) {
+      this.editingCategory.update(cat => ({ ...cat!, icon: value }));
     } else {
       this.newCategory.update(cat => ({ ...cat, icon: value }));
     }

@@ -15,6 +15,7 @@ import { Category } from '../../../../data/categories';
 import { GridStore } from '../grid/grid.store';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CategoryService } from '../../../../shared/services/category.service';
 
 @Component({
     selector: 'transactions-form',
@@ -26,6 +27,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     constructor(private DBservice: IndexedDBService, private snackBar: MatSnackBar) {
     }
     private store = inject(GridStore);
+    private categories = inject(CategoryService)
+    categoriesSignal = this.categories.categories;
+
 
     cats = categories
     AddTransaction = new FormGroup({

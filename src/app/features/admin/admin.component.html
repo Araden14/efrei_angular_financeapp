@@ -71,8 +71,8 @@
 
     <!-- Category Form -->
     <div *ngIf="showCategoryForm()" class="category-form">
-      <h3>{{ editingCategoryIndex() !== null ? 'Modifier' : 'Ajouter' }} une catégorie</h3>
-      <form (ngSubmit)="editingCategoryIndex() !== null ? updateCategory() : addCategory()">
+      <h3>{{ editingCategory() !== null ? 'Modifier' : 'Ajouter' }} une catégorie</h3>
+      <form (ngSubmit)="editingCategory() !== null ? updateCategory() : addCategory()">
         <div class="form-group">
           <label for="categoryName">Nom de la catégorie</label>
           <input
@@ -98,7 +98,7 @@
         </div>
         <div class="form-actions">
           <button type="submit" class="btn btn-success">
-            {{ editingCategoryIndex() !== null ? 'Modifier' : 'Ajouter' }}
+            {{ editingCategory() !== null ? 'Modifier' : 'Ajouter' }}
           </button>
           <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
             Annuler
@@ -109,7 +109,7 @@
 
     <!-- Categories Grid -->
     <div class="categories-grid">
-      <div *ngFor="let category of categories(); let i = index" class="category-card">
+      <div *ngFor="let category of categories()" class="category-card">
         <div class="category-icon">
           {{ category.icon | categoryIcon }}
         </div>
@@ -118,7 +118,7 @@
           <p class="category-icon-name">{{ category.icon }}</p>
         </div>
         <div class="category-actions">
-          <button class="btn btn-edit" (click)="editCategory(i)">
+          <button class="btn btn-edit" (click)="editCategory(category)">
             ✏️ Modifier
           </button>
           <button
@@ -126,7 +126,7 @@
             appConfirm
             confirmMessage="Êtes-vous sûr de vouloir supprimer cette catégorie ?"
             confirmTitle="Supprimer la catégorie"
-            (confirmed)="removeCategory(i)">
+            (confirmed)="removeCategory(category)">
             🗑️ Supprimer
           </button>
         </div>
