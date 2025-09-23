@@ -11,9 +11,8 @@ import { FloatLabel } from 'primeng/floatlabel';
 
 @Component({
   selector: 'login',
-  standalone:true,
+  standalone: true,
   templateUrl: './login.html',
-  styleUrls: ['./login.css'],
   imports: [ReactiveFormsModule, InputText, Password, Button, FloatLabel],
 })
 export class LoginComponent {
@@ -49,5 +48,9 @@ export class LoginComponent {
       console.error('Login error:', error);
     }
     }
+  }
+
+  navigateToRegister() {
+    this.router.navigate(['/register']);
   }
 }

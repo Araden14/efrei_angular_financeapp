@@ -1,21 +1,19 @@
 import { Injectable, signal } from '@angular/core';
 import { User, LoginRequest, RegisterRequest } from '../models/user.model';
 import { users } from '../../../data/users';
+import { UserService } from '../../../shared/services/user.service';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private users = signal<User[]>(
-    users.map(user => ({
-      ...user,
-      role: user.role as 'user' | 'admin',
-      createdAt: new Date(user.createdAt)
-    }))
-  );
-
+  private users = signal<User[]>([]);
   private currentUser = signal<User | null>(null);
+
+  constructor(private userService: UserService) {
+    this.users = this.userService.getUsers();
+  }
 
   // Simuler un délai réseau
   private delay(ms: number): Promise<void> {
@@ -72,8 +70,7 @@ export class AuthService {
       createdAt: new Date(),
       token: this.generateToken(),
     };
-
-    this.users.update((users) => [...users, newUser]);
+    this.userService.addUser(newUser);
     this.currentUser.set(newUser);
     localStorage.setItem('token', newUser.token);
 

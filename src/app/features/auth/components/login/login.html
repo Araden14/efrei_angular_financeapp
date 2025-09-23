@@ -1,25 +1,31 @@
-<div class="login-container">
-  <div id="loginform">
-    <h2 id="title">S'identifier</h2>
-    <p-floatlabel class="login-field">
-      <input pInputText [formControl]="email" id="email" />
-      <label for="email">Email</label>
+<div class="w-screen h-screen flex items-center justify-center" style="background-image: url('/dan-freeman-7Zb7kUyQg1E-unsplash.jpg'); background-size: cover;">
+  <div class="flex flex-col border border-gray-800/50 rounded-2xl p-10 bg-black/50 backdrop-blur-2xl shadow-2xl">
+    <h2 class="pb-8 text-gray-100 font-semibold text-2xl">S'identifier</h2>
+    <p-floatlabel class="mb-6">
+      <input type="email" pSize="large" pInputText [formControl]="email" />
+      <label for="email" class="text-gray-300 font-medium">Email</label>
     </p-floatlabel>
-    <p-floatlabel class="login-field">
-      <p-password
-        [formControl]="password"
-        [toggleMask]="true"
-        [feedback]="false"
-        styleClass="w-full"
-        inputId="password"
-        inputStyleClass="w-full">
-      </p-password>
-      <label for="password">Enter your password</label>
+    <p-floatlabel class="mb-6">
+      <input type="password" pSize="large" pInputText [formControl]="password" />
+      <label for="password" class="text-gray-300 font-medium">Enter your password</label>
     </p-floatlabel>
-    <p-button
-      (click)="onSubmit()"
-      label="se connecter"
-      styleClass="login-submit-btn w-full">
-    </p-button>
+   
+     <!-- align left -->
+      <div class="w-fit flex justify-center items-center">
+        <p-button
+        (click)="onSubmit()"
+        label="Se connecter"
+        styleClass="mt-4">
+        <!-- <button class=" bg-gray-700 border border-gray-600 text-gray-100 font-semibold backdrop-blur-md transition-all duration-300 ease-in-out hover:bg-gray-600 hover:-translate-y-1 hover:shadow-lg">
+          Se connecter
+        </button> -->
+      </p-button>
+      </div>
+
+    <div class="mt-6 flex justify-center">
+      <a (click)="navigateToRegister()" class="text-gray-300 hover:text-gray-100 underline underline-offset-4 cursor-pointer transition-colors duration-200">
+        Pas de compte ? s'inscrire
+      </a>
+    </div>
   </div>
 </div>

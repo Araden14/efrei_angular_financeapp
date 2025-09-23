@@ -100,7 +100,6 @@ import { FloatLabel } from 'primeng/floatlabel';
             
             await this.DBservice.addTransaction(transaction);
             this.store.add([transaction]);
-            console.log("New transaction created:", transaction);
 
             // Reset form after successful submission
             this.AddTransaction.reset();
@@ -108,14 +107,14 @@ import { FloatLabel } from 'primeng/floatlabel';
             this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
-                detail: 'Transaction added successfully!'
+                detail: 'Transaction ajoutée avec succès'
             });
         } catch (error) {
             console.error("Error creating transaction:", error);
             this.messageService.add({
                 severity: 'error',
                 summary: 'Error',
-                detail: 'Failed to save transaction. Please try again.'
+                detail: "Echec lors de l'ajout de la transaction"
             });
         }
     }
