@@ -12,7 +12,7 @@ export const users = [
       "id": 2,
       "name": "samuel",
       "email": "user@example.com",
-      "password": "user123",
+      "password": "user1234",
       "role": "user",
       "createdAt": "2024-01-02T00:00:00.000Z",
       "token": "token2"
