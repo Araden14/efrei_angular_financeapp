@@ -33,7 +33,7 @@ import { FloatLabel } from 'primeng/floatlabel';
     cats = categories
     AddTransaction = new FormGroup({
       category : new FormControl<Category>({name: "", icon: 'more_horiz'}, { nonNullable: true, validators: [Validators.required] }),
-      amount: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required]}),
+      amount: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required, Validators.min(0.01)]}),
       date: new FormControl<Date>(new Date(), { nonNullable: true, validators: [Validators.required] }),
       name: new FormControl<string>('', {nonNullable: true, validators: [Validators.required] }),
       type: new FormControl<'income' | 'expense'>('expense', { nonNullable: true, validators: [Validators.required] }),
@@ -122,6 +122,12 @@ import { FloatLabel } from 'primeng/floatlabel';
         }
         if (controls.category.errors?.['required']) {
             errors.push('Category must be selected');
+        }
+        if (controls.amount.errors?.['required']) {
+            errors.push('Amount is required');
+        }
+        if (controls.amount.errors?.['min']) {
+            errors.push('Amount must be greater than 0');
         }
         if (controls.amount.errors?.['required']) {
             errors.push('Amount is required');
