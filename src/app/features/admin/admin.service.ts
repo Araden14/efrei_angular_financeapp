@@ -1,17 +1,19 @@
-import { Injectable, signal } from '@angular/core';
-import { users } from '../../data/users';
+import { inject, Injectable, signal } from '@angular/core';
 import { categories, Category } from '../../data/categories';
+import { UserService } from '../../shared/services/user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-  private _users = signal([...users]);
+  private  userService = inject(UserService)
   private _categories = signal([...categories]);
+  
+  _users = this.userService.getUsers()
 
   // Users
   get users() {
-    return this._users.asReadonly();
+    return this.userService.getUsers()
   }
 
   removeUser(userId: number): void {
