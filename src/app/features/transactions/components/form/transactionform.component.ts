@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, ViewChild, ElementRef } from '@angular/core';
 import { IndexedDBService } from '../../../indexdb/services/indexdb.service';
 import { CommonModule } from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -15,19 +15,26 @@ import { Select } from 'primeng/select';
 import { DatePicker } from 'primeng/datepicker';
 import { Button } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
+import { ProgressBar } from 'primeng/progressbar';
+import { AnimateDirective } from '../../../../shared/directives/animate.directive';
 
 @Component({
     selector: 'transactions-form',
-    imports: [CommonModule, InputText, Textarea, Select, DatePicker, Button, FloatLabel, ReactiveFormsModule],
+    imports: [CommonModule, InputText, Textarea, Select, DatePicker, Button, FloatLabel, ReactiveFormsModule, ProgressBar, AnimateDirective],
     providers: [IndexedDBService],
     templateUrl:'./transactionform.component.html',
   })
   export class TransactionformComponent {
+    @ViewChild('submitButton', { read: AnimateDirective }) submitButtonAnimator!: AnimateDirective;
+    
     constructor(private DBservice: IndexedDBService, private messageService: MessageService) {
     }
     private store = inject(GridStore);
     private categories = inject(CategoryService)
     categoriesSignal = this.categories.categories;
+    
+    // Loading state for progress bar
+    isLoading = signal<boolean>(false);
 
 
     cats = categories
@@ -45,9 +52,18 @@ import { FloatLabel } from 'primeng/floatlabel';
         // Check if form is valid first
         if (this.AddTransaction.invalid) {
             this.showValidationErrors();
+            // Trigger validation error animation
+            if (this.submitButtonAnimator) {
+                this.submitButtonAnimator.triggerAnimation('shake');
+            }
             return;
         }
     
+        // Prevent multiple submissions while loading
+        if (this.isLoading()) {
+            return;
+        }
+
         const formValue = this.AddTransaction.value;
         const category = formValue.category;
         const amount = formValue.amount;
@@ -76,8 +92,15 @@ import { FloatLabel } from 'primeng/floatlabel';
     
         if (errors.length > 0) {
             this.showSpecificErrors(errors);
+            // Trigger validation error animation
+            if (this.submitButtonAnimator) {
+                this.submitButtonAnimator.triggerAnimation('shake');
+            }
             return;
         }
+
+        // Start loading
+        this.isLoading.set(true);
     
         try {
             const transaction: Transaction = {
@@ -92,17 +115,31 @@ import { FloatLabel } from 'primeng/floatlabel';
                 updatedAt: new Date()
             };
             
+            // Simulate API request delay
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
             await this.DBservice.addTransaction(transaction);
             this.store.add([transaction]);
 
             // Reset form after successful submission
-            this.AddTransaction.reset();
+            this.AddTransaction.reset({
+                category: {name: "", icon: 'more_horiz'},
+                amount: 0,
+                date: new Date(),
+                name: '',
+                type: 'expense'
+            });
 
             this.messageService.add({
                 severity: 'success',
                 summary: 'Success',
                 detail: 'Transaction ajoutée avec succès'
             });
+            
+            // Trigger success animation
+            if (this.submitButtonAnimator) {
+                this.submitButtonAnimator.triggerAnimation('bounce');
+            }
         } catch (error) {
             console.error("Error creating transaction:", error);
             this.messageService.add({
@@ -110,6 +147,14 @@ import { FloatLabel } from 'primeng/floatlabel';
                 summary: 'Error',
                 detail: "Echec lors de l'ajout de la transaction"
             });
+            
+            // Trigger error animation
+            if (this.submitButtonAnimator) {
+                this.submitButtonAnimator.triggerAnimation('shake');
+            }
+        } finally {
+            // Stop loading
+            this.isLoading.set(false);
         }
     }
     

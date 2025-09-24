@@ -1,69 +1,96 @@
-<form class="space-y-10" [formGroup]="AddTransaction" (ngSubmit)="onSubmit()">
-  <!-- Name field - full width -->
-  <div class="w-full">
-    <p-floatlabel>
-      <textarea pTextarea formControlName="name" rows="3" id="name" class="w-full"></textarea>
-      <label for="name">Nom</label>
-    </p-floatlabel>
+<div class="p-4">
+  <div class="w-full max-w-2xl mx-auto">
+    <h2 class="text-2xl font-semibold text-center mb-8">Add a transaction</h2>
+    
+    <form class="space-y-10" [formGroup]="AddTransaction" (ngSubmit)="onSubmit()">
+      <!-- Name field - full width -->
+      <div class="w-full">
+        <p-floatlabel>
+          <textarea pTextarea formControlName="name" rows="3" id="name" class="w-full"></textarea>
+          <label for="name">Name</label>
+        </p-floatlabel>
+      </div>
+
+      <!-- Type and Category row - 2 columns -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <p-floatlabel>
+          <p-select
+            formControlName="type"
+            [options]="[{label: 'Income', value: 'income'}, {label: 'Expense', value: 'expense'}]"
+            optionLabel="label"
+            optionValue="value"
+            inputId="type"
+            class="w-full">
+          </p-select>
+          <label for="type">Transaction type</label>
+        </p-floatlabel>
+
+        <p-floatlabel>
+          <p-select
+            formControlName="category"
+            [options]="categoriesSignal()"
+            optionLabel="name"
+            inputId="category"
+            class="w-full">
+            <ng-template pTemplate="selectedItem" let-selectedOption>
+              <span *ngIf="selectedOption">
+                <i [class]="selectedOption.icon" class="pi mr-2"></i>
+                {{ selectedOption.name }}
+              </span>
+            </ng-template>
+            <ng-template let-category pTemplate="item">
+              <i [class]="category.icon" class="pi mr-2"></i>
+              {{ category.name }}
+            </ng-template>
+          </p-select>
+          <label for="category">Category</label>
+        </p-floatlabel>
+      </div>
+
+      <!-- Amount and Date row - 2 columns for alignment -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <p-floatlabel>
+          <input pInputText type="number" formControlName="amount" id="amount" class="w-full" />
+          <label for="amount">Amount (€)</label>
+        </p-floatlabel>
+
+        <p-floatlabel>
+          <p-datepicker
+            formControlName="date"
+            dateFormat="dd/mm/yy"
+            inputId="date"
+            class="w-full">
+          </p-datepicker>
+          <label for="date">Date</label>
+        </p-floatlabel>
+      </div>
+
+      <!-- Submit button - right aligned -->
+      <div class="flex justify-end">
+        <p-button 
+          #submitButton
+          type="submit" 
+          [label]="isLoading() ? 'Adding...' : 'Submit'" 
+          severity="primary" 
+          [disabled]="isLoading()"
+          [loading]="isLoading()"
+          appAnimate="glow"
+          animationTrigger="both"
+          animationDuration="250ms"
+          class="transition-all duration-200">
+        </p-button>
+      </div>
+    </form>
+
+    <!-- Loading indicator -->
+    @if (isLoading()) {
+      <div class="mt-4">
+        <p-progressbar 
+          mode="indeterminate" 
+          [style]="{ height: '6px', '--p-progressbar-background': '#d1fae5', '--p-progressbar-value-background': '#10b981' }"
+          class="w-full">
+        </p-progressbar>
+      </div>
+    }
   </div>
-
-  <!-- Type and Category row - 2 columns -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <p-floatlabel>
-      <p-select
-        formControlName="type"
-        [options]="[{label: 'Income', value: 'income'}, {label: 'Expense', value: 'expense'}]"
-        optionLabel="label"
-        optionValue="value"
-        inputId="type"
-        class="w-full">
-      </p-select>
-      <label for="type">Type de transaction</label>
-    </p-floatlabel>
-
-    <p-floatlabel>
-      <p-select
-        formControlName="category"
-        [options]="categoriesSignal()"
-        optionLabel="name"
-        inputId="category"
-        class="w-full">
-        <ng-template pTemplate="selectedItem" let-selectedOption>
-          <span *ngIf="selectedOption">
-            <i [class]="selectedOption.icon" class="pi mr-2"></i>
-            {{ selectedOption.name }}
-          </span>
-        </ng-template>
-        <ng-template let-category pTemplate="item">
-          <i [class]="category.icon" class="pi mr-2"></i>
-          {{ category.name }}
-        </ng-template>
-      </p-select>
-      <label for="category">Catégorie</label>
-    </p-floatlabel>
-  </div>
-
-  <!-- Amount, Date, and Frequency row - 3 columns -->
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <p-floatlabel>
-      <input pInputText type="number" formControlName="amount" id="amount" class="w-full" />
-      <label for="amount">Montant (€)</label>
-    </p-floatlabel>
-
-    <p-floatlabel>
-      <p-datepicker
-        formControlName="date"
-        dateFormat="dd/mm/yy"
-        inputId="date"
-        class="w-full">
-      </p-datepicker>
-      <label for="date">Date</label>
-    </p-floatlabel>
-
-  </div>
-
-  <!-- Submit button - right aligned -->
-  <div class="flex justify-end">
-    <p-button type="submit" label="Submit" severity="primary"></p-button>
-  </div>
-</form>
+</div>
