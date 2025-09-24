@@ -1,15 +1,14 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth/services/auth.service';
 import { User } from '../auth/models/user.model';
 import { CommonModule } from '@angular/common';
 import { Menubar } from 'primeng/menubar';
-import { Button } from 'primeng/button';
 import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'navbar',
-  imports: [CommonModule, RouterLink, Menubar, Button],
+  imports: [CommonModule, Menubar],
   standalone: true,
   templateUrl: './navbar.component.html'
 })
@@ -29,8 +28,12 @@ export class Navbar implements OnInit {
       {
         label: 'Transactions',
         routerLink: '/'
+      },
+      {
+        label: 'Analytics',
+        routerLink: '/analytics'
       }
-      
+
     ];
 
     if (this.user()?.role === 'admin') {
