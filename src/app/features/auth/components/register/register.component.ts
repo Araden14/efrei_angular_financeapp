@@ -41,7 +41,7 @@ export class RegisterComponent {
                     this.messageService.add({
                         severity: 'success',
                         summary: 'Success',
-                        detail: 'Inscription réussie!'
+                        detail: 'Registration successful!'
                     });
                     this.router.navigate(['']);
                 }
@@ -49,17 +49,17 @@ export class RegisterComponent {
         } else {
             let error_msgs = []
             if (this.register.get("email")?.errors){
-                error_msgs.push("L'email est incorrect")
+                error_msgs.push("The email is incorrect")
             }
             if (this.register.get("name")?.value == '' || this.register.get("email")?.value == '' || this.register.get("password")?.value == '' || this.register.get("confirmpassword")?.value == ''){
-                error_msgs.push("Veuillez vérifier si tous les champs sont remplis")
+                error_msgs.push("Please check if all fields are filled")
             }
             if (this.register.errors){
-                error_msgs.push("Les deux mots de passe ne correspondent pas")
+                error_msgs.push("The two passwords do not match")
             }
             this.messageService.add({
                 severity: 'error',
-                summary: 'Erreur',
+                summary: 'Error',
                 detail: `${error_msgs.join('\n')}`
             });
         }
