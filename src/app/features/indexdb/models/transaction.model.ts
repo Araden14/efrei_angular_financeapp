@@ -6,7 +6,6 @@ export interface Transaction {
     date : Date
     name : string
     type : 'income' | 'expense'
-    frequency : 'once' | 'monthly' | 'yearly' | 'weekly' | 'none'
     userId : number
     createdAt : Date
     updatedAt : Date

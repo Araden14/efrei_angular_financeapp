@@ -109,11 +109,6 @@ export class TransactionGridComponent {
             field: "type",
             headerName: "Type",
             minWidth: 100
-        },
-        {
-            field: "frequency",
-            headerName: "Fréquence",
-            minWidth: 100
         }
     ];
 

@@ -37,7 +37,6 @@ import { FloatLabel } from 'primeng/floatlabel';
       date: new FormControl<Date>(new Date(), { nonNullable: true, validators: [Validators.required] }),
       name: new FormControl<string>('', {nonNullable: true, validators: [Validators.required] }),
       type: new FormControl<'income' | 'expense'>('expense', { nonNullable: true, validators: [Validators.required] }),
-      frequency: new FormControl<'once' | 'monthly' | 'yearly' | 'weekly' | 'none'>('none', { nonNullable: true, validators: [Validators.required] }),
     })
 
     
@@ -55,7 +54,6 @@ import { FloatLabel } from 'primeng/floatlabel';
         const date = formValue.date;
         const name = formValue.name;
         const type = formValue.type;
-        const frequency = formValue.frequency;
     
         // More specific validation
         const errors: string[] = [];
@@ -75,9 +73,6 @@ import { FloatLabel } from 'primeng/floatlabel';
         if (!type) {
             errors.push('Transaction type is required');
         }
-        if (!frequency) {
-            errors.push('Frequency is required');
-        }
     
         if (errors.length > 0) {
             this.showSpecificErrors(errors);
@@ -93,7 +88,6 @@ import { FloatLabel } from 'primeng/floatlabel';
                 amount : amount!,
                 date : date!,
                 userId : 1,
-                frequency: frequency!,
                 createdAt: new Date(),
                 updatedAt: new Date()
             };
@@ -137,9 +131,6 @@ import { FloatLabel } from 'primeng/floatlabel';
         }
         if (controls.type.errors?.['required']) {
             errors.push('Transaction type must be selected');
-        }
-        if (controls.frequency.errors?.['required']) {
-            errors.push('Frequency must be selected');
         }
     
         this.showSpecificErrors(errors);

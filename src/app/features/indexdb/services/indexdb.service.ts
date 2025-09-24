@@ -22,7 +22,6 @@ export class IndexedDBService {
         store.createIndex('by_category', 'category.name', { unique: false });
         store.createIndex('by_date', 'date', { unique: false });
         store.createIndex('by_amount', 'amount', { unique: false });
-        store.createIndex('by_frequency', 'frequency', { unique: false });
       }
     }
   });
