@@ -76,12 +76,12 @@ export class TransactionGridComponent {
     colDefs: ColDef[] = [
         {
             field: "name",
-            headerName: "Nom",
+            headerName: "Name",
             minWidth: 150
         },
         {
             field: "category.icon",
-            headerName: "Catégorie",
+            headerName: "Category",
             minWidth: 120,
             cellRenderer: (params: any) => {
                 const iconName = params.value;
@@ -94,7 +94,7 @@ export class TransactionGridComponent {
         },
         {
             field: "amount",
-            headerName: "Montant",
+            headerName: "Amount",
             minWidth: 100,
             valueFormatter: (params) => `${params.value}€`
         },
@@ -154,6 +154,18 @@ export class TransactionGridComponent {
         });
       }
 
+    private confirmDelete(startIndex: number, endIndex: number, rowCount: number): void {
+        const isMultiple = rowCount > 1;
+        const confirmTitle = 'Delete Transaction' + (isMultiple ? 's' : '');
+        const confirmMessage = isMultiple 
+            ? `Are you sure you want to delete these ${rowCount} transactions? This action cannot be undone.`
+            : 'Are you sure you want to delete this transaction? This action cannot be undone.';
+
+        if (confirm(`${confirmTitle}\n\n${confirmMessage}`)) {
+            this.deleteRows(startIndex, endIndex);
+        }
+    }
+
     private deleteRows(startIndex: number, endIndex: number) {
     // Collect row data within the specified range
     const rowDataToRemove = [];
@@ -191,7 +203,7 @@ export class TransactionGridComponent {
         const menuItems: (DefaultMenuItem | MenuItemDef)[] = [
           {
             name: `Delete ${rowLabel}`,
-            action: () => this.deleteRows(startIndex, endIndex),
+            action: () => this.confirmDelete(startIndex, endIndex, rowCount),
             icon: '<span class="ag-icon ag-icon-minus"></span>',
           },
         ];
