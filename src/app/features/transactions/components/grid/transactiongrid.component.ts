@@ -55,14 +55,13 @@ export class TransactionGridComponent {
         minWidth: 100,
         resizable: true,
         sortable: true,
-        filter: true
+        filter: true,
+
     };
 
     gridOptions: GridOptions = {
         rowHeight:40,
         pagination: true,
-        paginationPageSize: 10,
-        paginationPageSizeSelector: [10, 20, 50],
         suppressHorizontalScroll: false,
         ensureDomOrder: true,
         tooltipShowDelay: 0,

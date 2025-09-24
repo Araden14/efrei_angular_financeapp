@@ -3,42 +3,100 @@
 <div class="mt-[3rem] flex items-center justify-center">
   <div class="w-full px-[3rem] flex gap-4 analytics-container">
     <div class="w-full analytics-content">
-      <div class="mb-4">
+      <div class="mb-6">
         <h1 class="text-2xl font-bold text-white mb-2">Analytics Dashboard</h1>
         <p class="text-gray-300">Track your monthly expenses and income trends</p>
+
+        <!-- Date Filters -->
+        <div class="mt-4 flex gap-4 items-center">
+          <div class="flex flex-col">
+            <label for="startDate" class="text-sm text-gray-300 mb-1">Start Date</label>
+            <input
+              id="startDate"
+              type="date"
+              [(ngModel)]="startDate"
+              (change)="onDateFilterChange()"
+              class="px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div class="flex flex-col">
+            <label for="endDate" class="text-sm text-gray-300 mb-1">End Date</label>
+            <input
+              id="endDate"
+              type="date"
+              [(ngModel)]="endDate"
+              (change)="onDateFilterChange()"
+              class="px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="mt-6 flex gap-4">
+          <!-- Balance Key Number -->
+          <div class="flex-1 bg-slate-800 rounded-lg p-6 border border-slate-600">
+            <div class="text-center">
+              <h2 class="text-sm font-medium text-gray-300 mb-2">Balance</h2>
+              <p class="text-3xl font-bold" [class]="balance >= 0 ? 'text-green-400' : 'text-red-400'">
+                €{{ balance.toFixed(2) }}
+              </p>
+              <p class="text-xs text-gray-400 mt-1">
+                {{ balance >= 0 ? 'Positive' : 'Negative' }} balance for selected period
+              </p>
+            </div>
+          </div>
+
+          <!-- Highest Transaction -->
+          @if(highestTransaction) {
+          <div class="flex-1 bg-gradient-to-r from-purple-900 to-pink-900 rounded-lg p-6 border border-purple-600">
+            <div class="text-center">
+              <h2 class="text-sm font-medium text-gray-300 mb-2">🏆 Biggest Spender Alert!</h2>
+              <p class="text-2xl font-bold text-yellow-400">
+                €{{ highestTransaction.amount.toFixed(2) }}
+              </p>
+              <p class="text-sm text-gray-300 mt-2">
+                "{{ highestTransaction.name }}"
+              </p>
+              <p class="text-xs text-gray-400 mt-1">
+                💸 Your wallet's biggest adventure this period!
+              </p>
+            </div>
+          </div>
+          }
+        </div>
       </div>
 
       <div class="flex gap-4">
-        <!-- Expenses Chart -->
-        <div class="flex-1 chart-container bg-slate-900 rounded-lg shadow-xl p-4 border border-slate-700 h-[700px]">
-          <h3 class="text-lg font-semibold text-white mb-4 text-center">Expenses</h3>
-          @if(expensesChartOptions) {
+        <!-- Combined Bar Chart -->
+        <div class="flex-1 chart-container bg-slate-900 rounded-lg shadow-xl p-4 border border-slate-700 flex flex-col items-center">
+          <h3 class="text-lg font-semibold text-white mb-4 text-center">Monthly Overview</h3>
+          @if(combinedChartOptions && monthlyData.length > 0) {
           <ag-charts
-            [options]="expensesChartOptions"
-            style="width: 100%; height: 100%;">
+            [options]="combinedChartOptions"
+            style="width: 100%; height: 400px;">
           </ag-charts>
           }
-          @if(monthlyExpenses.length === 0) {
+          @if(monthlyData.length === 0) {
           <div class="text-center py-12 text-gray-400">
-            <p class="text-lg">No expense data available</p>
-            <p class="text-sm">Add some expenses to see your monthly trends</p>
+            <p class="text-lg">No data available</p>
+            <p class="text-sm">Add some transactions or adjust the date range to see your monthly trends</p>
           </div>
           }
         </div>
 
-        <!-- Income Chart -->
-        <div class="flex-1 chart-container bg-slate-900 rounded-lg shadow-xl p-4 border border-slate-700 h-[700px]">
-          <h3 class="text-lg font-semibold text-white mb-4 text-center">Income</h3>
-          @if(incomeChartOptions) {
+        <!-- Pie Chart for Spending by Category -->
+        <div class="flex-1 chart-container bg-slate-900 rounded-lg shadow-xl p-4 border border-slate-700 flex flex-col items-center">
+          <h3 class="text-lg font-semibold text-white mb-4 text-center">Spending by Category</h3>
+          @if(pieChartOptions && categoryData.length > 0) {
           <ag-charts
-            [options]="incomeChartOptions"
-            style="width: 100%; height: 100%;">
+            [options]="pieChartOptions"
+            style="width: 100%; height: 400px;">
           </ag-charts>
           }
-          <div *ngIf="monthlyIncome.length === 0" class="text-center py-12 text-gray-400">
-            <p class="text-lg">No income data available</p>
-            <p class="text-sm">Add some income to see your monthly trends</p>
+          @if(categoryData.length === 0) {
+          <div class="text-center py-12 text-gray-400">
+            <p class="text-lg">No expense data available</p>
+            <p class="text-sm">Add some expenses or adjust the date range to see your spending breakdown</p>
           </div>
+          }
         </div>
       </div>
     </div>
