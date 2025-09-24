@@ -5,7 +5,7 @@
     <div class="w-1/4 admin-header">
       <p-card header="Administration Panel" [style]="{ width: '100%', 'min-height': 'calc(80vh - 3rem)' }" class="admin-card">
         <p>
-          Gérer les utilisateurs et les catégories de dépenses de l'application.
+          Manage users and expenses categories of the application.
         </p>
       </p-card>
     </div>
@@ -15,13 +15,13 @@
           <p-tab value="0">
             <div class="flex align-items-center gap-2">
               <i class="pi pi-users"></i>
-              <span>Utilisateurs ({{ users().length }})</span>
+              <span>Users ({{ users().length }})</span>
             </div>
           </p-tab>
           <p-tab value="1">
             <div class="flex align-items-center gap-2">
               <i class="pi pi-folder"></i>
-              <span>Catégories ({{ categories().length }})</span>
+              <span>Categories ({{ categories().length }})</span>
             </div>
           </p-tab>
         </p-tablist>
@@ -44,7 +44,7 @@
                       <div class="mt-1 flex items-center gap-2">
                         <p-chip [label]="user.role | capitalize" [styleClass]="user.role === 'admin' ? 'bg-emerald-600 text-white' : 'bg-blue-600 text-white'"></p-chip>
                         <span class="text-xs text-gray-400">
-                          Créé le {{ user.createdAt | dateFormat:'datetime' }}
+                          Created at {{ user.createdAt | dateFormat:'datetime' }}
                         </span>
                       </div>
                     </div>
@@ -54,7 +54,7 @@
                         severity="danger"
                         size="small"
                         (click)="removeUser(user.id)"
-                        pTooltip="Supprimer l'utilisateur"
+                        pTooltip="Delete user"
                         tooltipPosition="top"
                       ></p-button>
                     </div>
@@ -65,9 +65,9 @@
           </p-tabpanel>
           <p-tabpanel value="1">
             <div class="section-header flex justify-between items-center mb-4">
-              <h2 class="text-xl font-bold text-gray-100">Catégories</h2>
+              <h2 class="text-xl font-bold text-gray-100">Categories</h2>
               <p-button
-                [label]="showCategoryForm() ? 'Annuler' : 'Ajouter une catégorie'"
+                [label]="showCategoryForm() ? 'Cancel' : 'Add a category'"
                 [icon]="showCategoryForm() ? 'pi pi-times' : 'pi pi-plus'"
                 [severity]="showCategoryForm() ? 'secondary' : 'success'"
                 (click)="toggleCategoryForm()"
@@ -78,51 +78,51 @@
               [visible]="showCategoryForm()"
               [modal]="true"
               [style]="{ width: '400px' }"
-              [header]="editingCategory() !== null ? 'Modifier une catégorie' : 'Ajouter une catégorie'"
+              [header]="editingCategory() !== null ? 'Modify a category' : 'Add a category'"
               (onHide)="cancelEdit()"
             >
               <form (ngSubmit)="editingCategory() !== null ? updateCategory() : addCategory()">
                 <div class="p-fluid">
                   <div class="field mb-4">
-                    <label for="categoryName" class="block text-gray-300 text-sm font-bold mb-2">Nom de la catégorie</label>
+                    <label for="categoryName" class="block text-gray-300 text-sm font-bold mb-2">Category name</label>
                     <input
                       id="categoryName"
                       type="text"
                       pInputText
                       [(ngModel)]="currentCategoryName"
                       name="name"
-                      placeholder="Ex: Transport, Alimentation..."
+                      placeholder="Ex: Transport, Food..."
                       required
                       class="w-full"
                     />
                   </div>
                   <div class="field mb-4">
-                    <label for="categoryIcon" class="block text-gray-300 text-sm font-bold mb-2">Icône (nom Material Icons)</label>
+                    <label for="categoryIcon" class="block text-gray-300 text-sm font-bold mb-2">Icon (name Material Icons)</label>
                     <input
                       id="categoryIcon"
                       type="text"
                       pInputText
                       [(ngModel)]="currentCategoryIcon"
                       name="icon"
-                      placeholder="Ex: shopping_cart, directions_car..."
+                      placeholder="Ex: shopping_cart, directions_car, ..."
                       required
                       class="w-full"
                     />
                     <small class="block text-gray-500 mt-2">
-                      Icônes disponibles: shopping_cart, flash_on, directions_car, local_hospital, movie, restaurant, school, spa, checkroom, home, more_horiz
+                      Icons available: shopping_cart, flash_on, directions_car, local_hospital, movie, restaurant, school, spa, checkroom, home, more_horiz
                     </small>
                   </div>
                 </div>
                 <div class="flex justify-end gap-2 mt-4">
                   <p-button
                     type="button"
-                    label="Annuler"
+                    label="Cancel"
                     severity="secondary"
                     (click)="cancelEdit()"
                   ></p-button>
                   <p-button
                     type="submit"
-                    [label]="editingCategory() !== null ? 'Modifier' : 'Ajouter'"
+                    [label]="editingCategory() !== null ? 'Modify' : 'Add'"
                     severity="success"
                   ></p-button>
                 </div>
