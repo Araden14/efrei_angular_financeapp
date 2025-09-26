@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { adminGuard } from './admin.guard';
 
@@ -49,7 +49,7 @@ describe('adminGuard', () => {
       writable: true
     });
 
-    const result = TestBed.runInInjectionContext(() => adminGuard(null as any, null as any));
+    const result = TestBed.runInInjectionContext(() => adminGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
     expect(result).toBe(true);
     expect(routerSpy.navigate).not.toHaveBeenCalled();
@@ -72,7 +72,7 @@ describe('adminGuard', () => {
       writable: true
     });
 
-    const result = TestBed.runInInjectionContext(() => adminGuard(null as any, null as any));
+    const result = TestBed.runInInjectionContext(() => adminGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
     expect(result).toBe(false);
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/todos']);
@@ -84,7 +84,7 @@ describe('adminGuard', () => {
       writable: true
     });
 
-    const result = TestBed.runInInjectionContext(() => adminGuard(null as any, null as any));
+    const result = TestBed.runInInjectionContext(() => adminGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
     expect(result).toBe(false);
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/todos']);
@@ -96,7 +96,7 @@ describe('adminGuard', () => {
       writable: true
     });
 
-    const result = TestBed.runInInjectionContext(() => adminGuard(null as any, null as any));
+    const result = TestBed.runInInjectionContext(() => adminGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
     expect(result).toBe(false);
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/todos']);
@@ -123,7 +123,7 @@ describe('adminGuard', () => {
     const mockState = { url: '/admin/users' };
 
     const result = TestBed.runInInjectionContext(() =>
-      adminGuard(mockRoute as any, mockState as any)
+      adminGuard(mockRoute as ActivatedRouteSnapshot, mockState as RouterStateSnapshot)
     );
 
     expect(result).toBe(true);
@@ -151,7 +151,7 @@ describe('adminGuard', () => {
     const mockState = { url: '/admin/users' };
 
     const result = TestBed.runInInjectionContext(() =>
-      adminGuard(mockRoute as any, mockState as any)
+      adminGuard(mockRoute as ActivatedRouteSnapshot, mockState as RouterStateSnapshot)
     );
 
     expect(result).toBe(false);

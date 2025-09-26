@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
+import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '../../features/auth/services/auth.service';
 import { authGuard } from './auth.guard';
 
@@ -45,7 +45,7 @@ describe('authGuard', () => {
     localStorageSpy.getItem.and.returnValue('valid-token');
     authServiceSpy.findUserByToken.and.returnValue(mockUser);
 
-    const result = TestBed.runInInjectionContext(() => authGuard(null as any, null as any));
+    const result = TestBed.runInInjectionContext(() => authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
     expect(localStorageSpy.getItem).toHaveBeenCalledWith('token');
     expect(authServiceSpy.findUserByToken).toHaveBeenCalledWith('valid-token');
@@ -67,7 +67,7 @@ describe('authGuard', () => {
     localStorageSpy.getItem.and.returnValue('admin-token');
     authServiceSpy.findUserByToken.and.returnValue(mockUser);
 
-    const result = TestBed.runInInjectionContext(() => authGuard(null as any, null as any));
+    const result = TestBed.runInInjectionContext(() => authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
     expect(result).toBe(true);
     expect(authServiceSpy.setCurrentUser).toHaveBeenCalledWith(mockUser);
@@ -76,7 +76,7 @@ describe('authGuard', () => {
   it('should deny access when no token exists', () => {
     localStorageSpy.getItem.and.returnValue(null);
 
-    const result = TestBed.runInInjectionContext(() => authGuard(null as any, null as any));
+    const result = TestBed.runInInjectionContext(() => authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
     expect(localStorageSpy.getItem).toHaveBeenCalledWith('token');
     expect(authServiceSpy.findUserByToken).not.toHaveBeenCalled();
@@ -89,7 +89,7 @@ describe('authGuard', () => {
     localStorageSpy.getItem.and.returnValue('invalid-token');
     authServiceSpy.findUserByToken.and.returnValue(null);
 
-    const result = TestBed.runInInjectionContext(() => authGuard(null as any, null as any));
+    const result = TestBed.runInInjectionContext(() => authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
     expect(localStorageSpy.getItem).toHaveBeenCalledWith('token');
     expect(authServiceSpy.findUserByToken).toHaveBeenCalledWith('invalid-token');
@@ -101,7 +101,7 @@ describe('authGuard', () => {
   it('should deny access when token is empty string', () => {
     localStorageSpy.getItem.and.returnValue('');
 
-    const result = TestBed.runInInjectionContext(() => authGuard(null as any, null as any));
+    const result = TestBed.runInInjectionContext(() => authGuard({} as ActivatedRouteSnapshot, {} as RouterStateSnapshot));
 
     expect(localStorageSpy.getItem).toHaveBeenCalledWith('token');
     expect(authServiceSpy.findUserByToken).not.toHaveBeenCalled();
@@ -128,7 +128,7 @@ describe('authGuard', () => {
     const mockState = { url: '/protected' };
 
     const result = TestBed.runInInjectionContext(() =>
-      authGuard(mockRoute as any, mockState as any)
+      authGuard(mockRoute as ActivatedRouteSnapshot, mockState as RouterStateSnapshot)
     );
 
     expect(result).toBe(true);
