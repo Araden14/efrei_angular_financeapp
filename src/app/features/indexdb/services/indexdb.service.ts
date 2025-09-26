@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Transaction } from '../models/transaction.model';
-// @ts-ignore
-import { openDB } from 'idb';
+import { openDB, IDBPDatabase } from 'idb';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IndexedDBService {
   private dbPromise = openDB('FinanceAppDB', 1, {
-    upgrade(db: any) {
+    upgrade(db: IDBPDatabase) {
       // Object store for transactions
       if (!db.objectStoreNames.contains('transactions')) {
         const store = db.createObjectStore('transactions', {
