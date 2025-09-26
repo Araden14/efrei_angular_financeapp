@@ -1,6 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { User, LoginRequest, RegisterRequest } from '../models/user.model';
-import { users } from '../../../data/users';
 import { UserService } from '../../../shared/services/user.service';
 
 
@@ -11,7 +10,9 @@ export class AuthService {
   private users = signal<User[]>([]);
   private currentUser = signal<User | null>(null);
 
-  constructor(private userService: UserService) {
+  private userService = inject(UserService);
+
+  constructor() {
     this.users = this.userService.getUsers();
   }
 
