@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { TransactionformComponent } from '../../../features/transactions/components/form/transactionform.component';
 import { TransactionGridComponent } from '../../../features/transactions/components/grid/transactiongrid.component';
-import { Navbar } from '../../../features/navbar/navbar.component';
+import { Navbar } from '../../navbar/navbar.component';
 import { CategoryService } from '../../../shared/services/category.service';
 import { OnInit } from '@angular/core';
 @Component({
