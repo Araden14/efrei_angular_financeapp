@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true
 })
 export class CategoryIconPipe implements PipeTransform {
-  private iconMap: { [key: string]: string } = {
+  private iconMap: Record<string, string> = {
     'shopping_cart': '🛒',
     'flash_on': '⚡',
     'directions_car': '🚗',

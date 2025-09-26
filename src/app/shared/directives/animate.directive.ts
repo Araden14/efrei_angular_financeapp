@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, Renderer2, inject } from '@angular/core';
 
 @Directive({
   selector: '[appAnimate]',
@@ -7,9 +7,12 @@ import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/
 export class AnimateDirective {
   @Input() appAnimate: 'pulse' | 'bounce' | 'shake' | 'scale' | 'glow' = 'pulse';
   @Input() animationTrigger: 'hover' | 'click' | 'both' = 'both';
-  @Input() animationDuration: string = '300ms';
+  @Input() animationDuration = '300ms';
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {
+  private el = inject(ElementRef);
+  private renderer = inject(Renderer2);
+
+  constructor() {
     this.setupBaseStyles();
   }
 

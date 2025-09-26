@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true
 })
 export class DateFormatPipe implements PipeTransform {
-  transform(value: string | Date, format: string = 'short'): string {
+  transform(value: string | Date, format = 'short'): string {
     if (!value) return '';
 
     const date = new Date(value);
