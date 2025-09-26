@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
-import { RegisterComponent } from './features/auth/components/register/register.component';
 
 export const routes: Routes = [
   {
