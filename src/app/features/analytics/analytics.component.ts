@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { AgCharts } from 'ag-charts-angular';
 import { IndexedDBService } from "../indexdb/services/indexdb.service";
 import { Transaction } from "../indexdb/models/transaction.model";
-import { Navbar } from "../navbar/navbar.component";
+import { Navbar } from "../../core/navbar/navbar.component";
 import { CategoryIconPipe } from "../../shared/pipes/category-icon.pipe";
 
 interface MonthlyData {
@@ -22,7 +22,7 @@ interface CategorySlice {
 }
 
 @Component({
-    selector: 'analytics',
+    selector: 'app-analytics',
     templateUrl: './analytics.component.html',
     standalone: true,
     imports: [CommonModule, FormsModule, AgCharts, Navbar],
@@ -31,17 +31,19 @@ interface CategorySlice {
 export class AnalyticsComponent implements OnInit {
   monthlyData: MonthlyData[] = [];
   categoryData: CategorySlice[] = [];
-  combinedChartOptions: any;
-  pieChartOptions: any;
-  balance: number = 0;
+  combinedChartOptions: object = {};
+  pieChartOptions: object = {};
+  balance = 0;
   highestTransaction: Transaction | null = null;
   private categoryIconPipe = inject(CategoryIconPipe);
 
   // Date filters
-  startDate: string = '';
-  endDate: string = '';
+  startDate = '';
+  endDate = '';
 
-  constructor(private dbService: IndexedDBService) {
+  private dbService = inject(IndexedDBService);
+
+  constructor() {
     // Set default date range (current month)
     const endDate = new Date();
     const startDate = new Date();
