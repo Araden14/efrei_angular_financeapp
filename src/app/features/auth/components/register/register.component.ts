@@ -1,5 +1,5 @@
-import {EmailValidator, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { Component } from '@angular/core';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { passwordMatchValidator } from '../../../../shared/validators/passwordValidator';
 import { InputText } from 'primeng/inputtext';
@@ -11,14 +11,16 @@ import { MessageService } from 'primeng/api';
 import { Toast } from 'primeng/toast';
 import { Router } from '@angular/router';
 @Component({
-  selector: 'register',
+  selector: 'app-register',
   templateUrl: './register.component.html',
   standalone:true,
   imports: [ReactiveFormsModule, InputText, Password, Button, FloatLabel, Message, Toast],
   providers: [MessageService, AuthService]
 })
 export class RegisterComponent {
-    constructor(private messageService : MessageService, private authService : AuthService, private router : Router) {}
+    private messageService = inject(MessageService);
+    private authService = inject(AuthService);
+    private router = inject(Router);
     register = new FormGroup({
         name: new FormControl('',[Validators.required]),
         email: new FormControl('',[Validators.required, Validators.email]),
@@ -47,7 +49,7 @@ export class RegisterComponent {
                 }
             })
         } else {
-            let error_msgs = []
+            const error_msgs = []
             if (this.register.get("email")?.errors){
                 error_msgs.push("The email is incorrect")
             }
