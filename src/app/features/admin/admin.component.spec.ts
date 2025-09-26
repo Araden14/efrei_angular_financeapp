@@ -5,7 +5,6 @@ import { AdminComponent } from './admin.component';
 import { AdminService } from './admin.service';
 import { CategoryService } from '../../shared/services/category.service';
 import { Category } from '../../data/categories';
-// PrimeNG imports
 import { CardModule } from 'primeng/card';
 import { TabsModule } from 'primeng/tabs';
 import { ButtonModule } from 'primeng/button';

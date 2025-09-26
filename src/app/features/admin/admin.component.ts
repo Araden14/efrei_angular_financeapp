@@ -2,7 +2,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Navbar } from '../navbar/navbar.component';
+import { Navbar } from '../../core/navbar/navbar.component';
 import { AdminService } from './admin.service';
 import { DateFormatPipe } from '../../shared/pipes/date-format.pipe';
 import { CapitalizePipe } from '../../shared/pipes/capitalize.pipe';
@@ -21,7 +21,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { Select } from 'primeng/select';
 
 @Component({
-  selector: 'admin',
+  selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css',
   standalone: true,
