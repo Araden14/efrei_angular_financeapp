@@ -8,26 +8,47 @@
         <p class="text-gray-300">Track your monthly expenses and income trends</p>
 
         <!-- Date Filters -->
-        <div class="mt-4 flex gap-4 items-center">
-          <div class="flex flex-col">
-            <label for="startDate" class="text-sm text-gray-300 mb-1">Start Date</label>
-            <input
-              id="startDate"
-              type="date"
-              [(ngModel)]="startDate"
-              (change)="onDateFilterChange()"
-              class="px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <fieldset class="mt-4" role="group" aria-labelledby="date-filter-legend">
+          <legend id="date-filter-legend" class="sr-only">Date Range Filters for Analytics Data</legend>
+          <div class="flex gap-4 items-center" role="group" aria-describedby="date-filter-help">
+            <div class="flex flex-col">
+              <label for="startDate" class="text-sm text-gray-300 mb-1">Start Date</label>
+              <input
+                id="startDate"
+                type="date"
+                [(ngModel)]="startDate"
+                (change)="onDateFilterChange()"
+                class="px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-describedby="startDate-help"
+                aria-label="Start date for analytics data range">
+              <div id="startDate-help" class="sr-only">
+                Select the beginning date for your analytics data range
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <label for="endDate" class="text-sm text-gray-300 mb-1">End Date</label>
+              <input
+                id="endDate"
+                type="date"
+                [(ngModel)]="endDate"
+                (change)="onDateFilterChange()"
+                class="px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                aria-describedby="endDate-help"
+                aria-label="End date for analytics data range">
+              <div id="endDate-help" class="sr-only">
+                Select the ending date for your analytics data range
+              </div>
+            </div>
+            <div id="date-filter-help" class="sr-only">
+              Use these date filters to analyze your financial data for a specific time period. The charts and metrics will update automatically when you change the dates.
+            </div>
           </div>
-          <div class="flex flex-col">
-            <label for="endDate" class="text-sm text-gray-300 mb-1">End Date</label>
-            <input
-              id="endDate"
-              type="date"
-              [(ngModel)]="endDate"
-              (change)="onDateFilterChange()"
-              class="px-3 py-2 bg-slate-800 border border-slate-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          
+          <!-- Live region for filter updates -->
+          <div id="filter-status" aria-live="polite" aria-atomic="true" class="sr-only">
+            <!-- This will announce when data is filtered/updated -->
           </div>
-        </div>
+        </fieldset>
 
         <!-- Key Metrics -->
         <div class="mt-6 flex gap-4">
