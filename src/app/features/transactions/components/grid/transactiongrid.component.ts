@@ -1,9 +1,9 @@
 import { AgGridAngular } from 'ag-grid-angular';
-import type { ColDef, GridOptions, GridApi, GridReadyEvent, GetContextMenuItemsParams, DefaultMenuItem, MenuItemDef, Module, ChartType } from 'ag-grid-community';
-import { Component, inject } from '@angular/core';
+import type { ColDef, GridOptions, GridApi, GridReadyEvent, GetContextMenuItemsParams, DefaultMenuItem, MenuItemDef, ChartType, ICellRendererParams, ITooltipParams } from 'ag-grid-community';
+import { Component, inject, OnInit } from '@angular/core';
 import { IndexedDBService } from '../../../indexdb/services/indexdb.service';
 import { GridStore } from './grid.store';
-import { ModuleRegistry, themeMaterial, themeQuartz } from 'ag-grid-community';
+import { ModuleRegistry } from 'ag-grid-community';
 import { AllEnterpriseModule } from 'ag-grid-enterprise';
 import { CategoryIconPipe } from '../../../../shared/pipes/category-icon.pipe';
 import { ChartToolPanelsDef } from 'ag-grid-community';
@@ -13,34 +13,19 @@ import { AgChartsEnterpriseModule } from 'ag-charts-enterprise';
 
 ModuleRegistry.registerModules([AllEnterpriseModule, IntegratedChartsModule.with(AgChartsEnterpriseModule)]);
 
-interface IOlympicData {
-    athlete: string;
-    age: number;
-    country: string;
-    year: number;
-    date: string;
-    sport: string;
-    gold: number;
-    silver: number;
-    bronze: number;
-    total: number;
-  }
-  
 interface ICellSelectionBounds {
     startIndex: number;
     endIndex: number;
     rowCount: number;
   }
-  
-type AddRowPosition = 'above' | 'below';
 @Component({
-    selector: 'transactions-grid',
+    selector: 'app-transactions-grid',
     imports: [AgGridAngular, CategoryIconPipe, AgChartsModule],
     providers: [IndexedDBService],
     templateUrl: './transactiongrid.component.html',
 })
-export class TransactionGridComponent {
-    constructor(private DBservice: IndexedDBService) {}
+export class TransactionGridComponent implements OnInit {
+    private DBservice = inject(IndexedDBService);
     private gridApi!: GridApi;
     store = inject(GridStore);
     private categoryIconPipe = new CategoryIconPipe();
@@ -83,12 +68,12 @@ export class TransactionGridComponent {
             field: "category.icon",
             headerName: "Category",
             minWidth: 120,
-            cellRenderer: (params: any) => {
+            cellRenderer: (params: ICellRendererParams) => {
                 const iconName = params.value;
                 const emoji = this.categoryIconPipe.transform(iconName);
                 return `<span style="font-size: 18px;">${emoji}</span>`;
             },
-            tooltipValueGetter: (params: any) => {
+            tooltipValueGetter: (params: ITooltipParams) => {
                 return params.data?.category?.name || '';
             }
         },

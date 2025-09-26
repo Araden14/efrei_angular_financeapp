@@ -1,4 +1,4 @@
-import { Component, inject, signal, ViewChild, ElementRef } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { IndexedDBService } from '../../../indexdb/services/indexdb.service';
 import { CommonModule } from '@angular/common';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -19,7 +19,7 @@ import { ProgressBar } from 'primeng/progressbar';
 import { AnimateDirective } from '../../../../shared/directives/animate.directive';
 
 @Component({
-    selector: 'transactions-form',
+    selector: 'app-transactions-form',
     imports: [CommonModule, InputText, Textarea, Select, DatePicker, Button, FloatLabel, ReactiveFormsModule, ProgressBar, AnimateDirective],
     providers: [IndexedDBService],
     templateUrl:'./transactionform.component.html',
@@ -27,8 +27,8 @@ import { AnimateDirective } from '../../../../shared/directives/animate.directiv
   export class TransactionformComponent {
     @ViewChild('submitButton', { read: AnimateDirective }) submitButtonAnimator!: AnimateDirective;
     
-    constructor(private DBservice: IndexedDBService, private messageService: MessageService) {
-    }
+    private DBservice = inject(IndexedDBService);
+    private messageService = inject(MessageService);
     private store = inject(GridStore);
     private categories = inject(CategoryService)
     categoriesSignal = this.categories.categories;
