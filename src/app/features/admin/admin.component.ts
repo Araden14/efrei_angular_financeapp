@@ -8,6 +8,8 @@ import { DateFormatPipe } from '../../shared/pipes/date-format.pipe';
 import { CapitalizePipe } from '../../shared/pipes/capitalize.pipe';
 import { Category } from '../../data/categories';
 import { CategoryService } from '../../shared/services/category.service';
+import { UserService } from '../../shared/services/user.service';
+import { User } from '../auth/models/user.model';
 // PrimeNG imports
 import { CardModule } from 'primeng/card';
 import { TabsModule } from 'primeng/tabs';
@@ -16,6 +18,7 @@ import { ChipModule } from 'primeng/chip';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'admin',
@@ -36,11 +39,13 @@ import { TooltipModule } from 'primeng/tooltip';
     InputTextModule,
     DialogModule,
     TooltipModule,
+    Select,
   ]
 })
 export class AdminComponent {
   private adminService = inject(AdminService);
-  private categoryService = inject(CategoryService)
+  private categoryService = inject(CategoryService);
+  private userService = inject(UserService);
 
   // Reactive signals
   users = this.adminService.users;
@@ -49,15 +54,65 @@ export class AdminComponent {
   // UI state
   activeTab = signal<'users' | 'categories'>('users');
   showCategoryForm = signal(false);
+  showUserForm = signal(false);
   editingCategory = signal<Category | null>(null);
   originalEditingCategory = signal<Category | null>(null);
 
   // Form data
   newCategory = signal<Category>({ name: '', icon: '' });
+  newUser = signal<Omit<User, 'id' | 'createdAt' | 'token'>>({
+    name: '',
+    email: '',
+    password: '',
+    role: 'user'
+  });
+
+  // Dropdown options
+  roleOptions = [
+    { label: 'User', value: 'user' },
+    { label: 'Admin', value: 'admin' }
+  ];
 
   // Users methods
   removeUser(userId: number): void {
     this.adminService.removeUser(userId);
+  }
+
+  addUser(): void {
+    if (this.newUser().name.trim() && this.newUser().email.trim() && this.newUser().password.trim()) {
+      // Generate new user with auto-generated fields
+      const user: User = {
+        ...this.newUser(),
+        id: Math.max(...this.users().map(u => u.id), 0) + 1, // Simple ID generation
+        createdAt: new Date(),
+        token: `token${Date.now()}` // Simple token generation
+      };
+      this.userService.addUser(user);
+      this.newUser.set({
+        name: '',
+        email: '',
+        password: '',
+        role: 'user'
+      });
+      this.showUserForm.set(false);
+    }
+  }
+
+  toggleUserForm(): void {
+    this.showUserForm.set(!this.showUserForm());
+    if (!this.showUserForm()) {
+      this.closeUserForm();
+    }
+  }
+
+  closeUserForm(): void {
+    this.showUserForm.set(false);
+    this.newUser.set({
+      name: '',
+      email: '',
+      password: '',
+      role: 'user'
+    });
   }
 
   // Categories methods
@@ -130,5 +185,37 @@ export class AdminComponent {
     } else {
       this.newCategory.update(cat => ({ ...cat, icon: value }));
     }
+  }
+
+  get currentUserName(): string {
+    return this.newUser().name;
+  }
+
+  set currentUserName(value: string) {
+    this.newUser.update(user => ({ ...user, name: value }));
+  }
+
+  get currentUserEmail(): string {
+    return this.newUser().email;
+  }
+
+  set currentUserEmail(value: string) {
+    this.newUser.update(user => ({ ...user, email: value }));
+  }
+
+  get currentUserPassword(): string {
+    return this.newUser().password;
+  }
+
+  set currentUserPassword(value: string) {
+    this.newUser.update(user => ({ ...user, password: value }));
+  }
+
+  get currentUserRole(): 'user' | 'admin' {
+    return this.newUser().role;
+  }
+
+  set currentUserRole(value: 'user' | 'admin') {
+    this.newUser.update(user => ({ ...user, role: value }));
   }
 }
