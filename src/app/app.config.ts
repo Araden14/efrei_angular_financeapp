@@ -9,7 +9,6 @@ import Aura from '@primeuix/themes/aura';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideAnimationsAsync(),
     MessageService,
     providePrimeNG({
       theme: {
