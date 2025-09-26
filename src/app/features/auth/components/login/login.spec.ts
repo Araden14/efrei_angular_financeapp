@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { of, throwError } from 'rxjs';
 
 import { LoginComponent } from './login';
 import { AuthService } from '../../services/auth.service';

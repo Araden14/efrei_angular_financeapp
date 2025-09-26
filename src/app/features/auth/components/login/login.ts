@@ -1,5 +1,5 @@
 import {FormControl, ReactiveFormsModule, Validators} from '@angular/forms';
-import { Component, signal} from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { LoginRequest } from '../../models/user.model';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { Toast } from 'primeng/toast';
 
 @Component({
-  selector: 'login',
+  selector: 'app-login',
   standalone: true,
   templateUrl: './login.html',
   imports: [ReactiveFormsModule, InputText, Button, FloatLabel, Toast],
@@ -18,7 +18,9 @@ import { Toast } from 'primeng/toast';
 export class LoginComponent {
   email = new FormControl('',[Validators.required, Validators.email])
   password = new FormControl('',[Validators.required, Validators.minLength(8)]);
-  constructor(private authService: AuthService, private router: Router, private messageService: MessageService) {}
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private messageService = inject(MessageService);
 
   async onSubmit() {
     // Mark fields as touched to trigger validation display

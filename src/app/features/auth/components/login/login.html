@@ -23,7 +23,7 @@
       </div>
 
     <div class="mt-6 flex justify-center">
-      <a (click)="navigateToRegister()" class="text-gray-300 hover:text-gray-100 underline underline-offset-4 cursor-pointer transition-colors duration-200">
+      <a (click)="navigateToRegister()" (keyup.enter)="navigateToRegister()" tabindex="0" role="button" class="text-gray-300 hover:text-gray-100 underline underline-offset-4 cursor-pointer transition-colors duration-200">
         No account ? sign up
       </a>
     </div>
