@@ -33,10 +33,12 @@
             inputId="category"
             class="w-full">
             <ng-template pTemplate="selectedItem" let-selectedOption>
-              <span *ngIf="selectedOption">
-                <i [class]="selectedOption.icon" class="pi mr-2"></i>
-                {{ selectedOption.name }}
-              </span>
+              @if (selectedOption) {
+                <span>
+                  <i [class]="selectedOption.icon" class="pi mr-2"></i>
+                  {{ selectedOption.name }}
+                </span>
+              }
             </ng-template>
             <ng-template let-category pTemplate="item">
               <i [class]="category.icon" class="pi mr-2"></i>
